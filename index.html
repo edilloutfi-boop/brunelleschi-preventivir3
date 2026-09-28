@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17171B">
+<title>Preventivi Persiane · Brunelleschi</title>
+<style>
+:root{
+  --y:#F5B301; --yd:#D99E00; --k:#17171B; --k2:#222228; --k3:#2E2E36;
+  --line:#3A3A44; --tx:#F2F2F0; --mut:#A4A4AE; --paper:#FFFFFF; --ok:#3FB37F; --warn:#E5484D;
+  --f:"Arial Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--k);color:var(--tx);font-family:var(--f);font-stretch:condensed;font-size:16px;line-height:1.35;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input,select,textarea{font:inherit;color:inherit}
+header.top{position:sticky;top:0;z-index:20;background:var(--k);border-bottom:3px solid var(--y);
+  padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand b{font-size:22px;letter-spacing:.5px;color:var(--y);font-weight:800}
+.brand span{color:var(--mut);font-size:15px}
+.partner{display:flex;align-items:center;gap:8px;padding-left:14px;border-left:1px solid var(--line);color:var(--mut);font-size:13px}
+.partner img{height:30px;width:auto;background:#fff;border-radius:4px;padding:3px 6px}
+.partner b{color:var(--tx);letter-spacing:1px}
+@media(max-width:620px){.partner{display:none}}
+nav.tabs{display:flex;gap:4px}
+#bRil{margin-left:auto}
+#rilBody input,#rilBody select{background:var(--k);color:var(--tx);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+#rilBody table input,#rilBody table select{font-size:15px}
+@media(max-width:1100px){.upl span{display:none}}
+.upl{margin-left:6px;display:flex;align-items:center;gap:8px;background:transparent;border:2px solid var(--y);color:var(--y);border-radius:8px;padding:7px 12px;font-weight:800;cursor:pointer}
+.upl:hover{background:var(--y);color:var(--k)}
+.upl:focus-visible{outline:2px solid var(--tx);outline-offset:2px}
+@media(max-width:620px){.upl span{display:none}}
+.drop{border:2px dashed var(--y);border-radius:10px;padding:18px;text-align:center;cursor:pointer;color:var(--tx)}
+.drop.hot{background:#2a2618}
+nav.tabs button{background:transparent;border:0;padding:8px 12px;border-radius:6px;color:var(--mut);cursor:pointer;font-weight:700}
+nav.tabs button.on{background:var(--y);color:var(--k)}
+.sync{font-size:13px;color:var(--mut);display:flex;align-items:center;gap:6px}
+.sync i{width:9px;height:9px;border-radius:50%;background:var(--mut);display:inline-block}
+.sync.cloud i{background:var(--ok)}
+main{max-width:1180px;margin:0 auto;padding:16px}
+section.view{display:none}
+section.view.on{display:block}
+h2{font-size:22px;margin:22px 0 10px;font-weight:800}
+h3{font-size:18px;margin:0 0 8px}
+.panel{background:var(--k2);border:1px solid var(--line);border-radius:10px;padding:14px}
+.grid{display:grid;gap:10px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:760px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.g2,.g3,.g4{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--mut)}
+label.f input,label.f select,label.f textarea{background:var(--k);border:1px solid var(--line);border-radius:6px;padding:9px 10px;color:var(--tx);font-size:16px;min-width:0}
+label.f input:focus,label.f select:focus,label.f textarea:focus{outline:2px solid var(--y);outline-offset:0;border-color:var(--y)}
+label.chk{display:flex;align-items:center;gap:8px;font-size:15px;cursor:pointer}
+label.chk input{width:20px;height:20px;accent-color:var(--y)}
+.btn{background:var(--k3);border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:700}
+.btn:hover{border-color:var(--y)}
+.btn.y{background:var(--y);color:var(--k);border-color:var(--y)}
+.btn.y:hover{background:var(--yd)}
+.btn.sm{padding:6px 10px;font-size:14px}
+.btn.del{color:#ff8a8d}
+.btn:focus-visible,nav.tabs button:focus-visible{outline:2px solid var(--y);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sp{flex:1}
+.muted{color:var(--mut)}
+.small{font-size:13px}
+
+/* voci */
+.voce{display:grid;grid-template-columns:180px 1fr auto;gap:14px;align-items:center;border-top:1px solid var(--line);padding:12px 0}
+.voce:first-child{border-top:0}
+.voce .mini{display:flex;gap:6px;background:#fff;border-radius:6px;padding:6px}
+.voce .mini svg{width:50%;height:auto}
+.voce .t{font-weight:800;font-size:17px}
+.voce .price{text-align:right}
+.voce .price b{font-size:20px;color:var(--y)}
+@media(max-width:640px){.voce{grid-template-columns:1fr}.voce .price{text-align:left}}
+.empty{border:2px dashed var(--line);border-radius:10px;padding:26px;text-align:center;color:var(--mut)}
+
+/* editor */
+.editor{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media(max-width:900px){.editor{grid-template-columns:1fr}}
+.stage{background:#fff;border-radius:10px;padding:14px;color:#222;position:sticky;top:78px}
+@media(max-width:900px){.stage{position:static}}
+.stage .views{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stage .views figure{margin:0;text-align:center}
+.stage figcaption{font-size:14px;color:#555;margin-top:4px;font-weight:700}
+.stage svg{width:100%;height:auto;max-height:420px}
+.stage .est{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #e3e3e3;margin-top:10px;padding-top:10px;gap:10px;flex-wrap:wrap}
+.stage .est .big{font-size:30px;font-weight:800;color:var(--k)}
+.stage .est .sub{font-size:13px;color:#666}
+.ante{display:grid;gap:8px}
+.anta{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:end}
+.anta .n{width:30px;height:38px;display:grid;place-items:center;background:var(--k);border:1px solid var(--line);border-radius:6px;font-weight:800;color:var(--y)}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:3px;border:1px solid #0006;vertical-align:-2px;margin-right:6px}
+.colors{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.colors button{width:34px;height:34px;border-radius:6px;border:2px solid transparent;cursor:pointer;padding:0}
+.colors button.on{border-color:var(--y);box-shadow:0 0 0 2px var(--k) inset}
+.alert{border-left:4px solid var(--y);background:#2a2618;padding:8px 10px;border-radius:4px;font-size:14px;margin-top:8px}
+.simili{font-size:13px;margin-top:8px}
+.simili table{width:100%;border-collapse:collapse}
+.simili td,.simili th{padding:4px 6px;border-bottom:1px solid #e5e5e5;text-align:left;color:#333}
+.simili th{color:#777;font-weight:700}
+
+/* riepilogo */
+.tot{display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:16px}
+.tot .k{color:var(--mut)}
+.tot .v{text-align:right;font-variant-numeric:tabular-nums}
+.tot .hr{grid-column:1/-1;border-top:1px solid var(--line);margin:4px 0}
+.tot .grand{font-size:24px;font-weight:800;color:var(--y)}
+.twocol{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+.list table{width:100%;border-collapse:collapse}
+.list td,.list th{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.list th{color:var(--mut);font-weight:700;font-size:14px}
+.overlay{position:fixed;inset:0;background:#000a;z-index:50;display:none;overflow:auto;padding:max(16px,env(safe-area-inset-top,0px)) 12px 30px}
+.overlay.on{display:block}
+.overlay .inner{max-width:1180px;margin:0 auto;background:var(--k);border:1px solid var(--line);border-radius:12px;padding:16px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--y);color:var(--k);padding:10px 16px;border-radius:8px;font-weight:800;z-index:99;display:none}
+
+/* stampa */
+#stampa{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;color:#111;padding:0}
+  header.top,main,.overlay,.toast{display:none!important}
+  #stampa{display:block;font-family:var(--f);font-stretch:condensed;color:#111}
+}
+#stampa .ph{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:4px solid #F5B301;padding-bottom:8px}
+#stampa .logo{font-size:26px;font-weight:800;letter-spacing:.5px}
+#stampa .logo span{background:#17171B;color:#F5B301;padding:2px 8px;margin-right:6px}
+#stampa .az{font-size:11px;color:#444;text-align:right;white-space:pre-line}
+#stampa .meta{display:flex;justify-content:space-between;margin:12px 0;font-size:13px;gap:20px}
+#stampa .meta h1{font-size:22px;margin:0 0 4px}
+#stampa .it{display:grid;grid-template-columns:62mm 1fr 34mm;gap:8px;border-bottom:1px solid #ccc;padding:8px 0;break-inside:avoid;font-size:12px}
+#stampa .it .dw{display:flex;gap:4px}
+#stampa .it .dw figure{margin:0;width:50%;text-align:center;font-size:10px;color:#555}
+#stampa .it .dw svg{width:100%;height:auto;max-height:60mm}
+#stampa .it .pr{text-align:right}
+#stampa .it .pr b{font-size:15px}
+#stampa .it h4{margin:0 0 3px;font-size:14px}
+#stampa .tt{margin-left:auto;width:80mm;margin-top:10px;font-size:13px;display:grid;grid-template-columns:1fr auto;gap:3px 12px}
+#stampa .tt .g{font-size:17px;font-weight:800;border-top:2px solid #111;padding-top:4px}
+#stampa .note{font-size:11px;color:#333;margin-top:14px;white-space:pre-line;border-top:1px solid #ccc;padding-top:8px}
+#stampa .firma{display:flex;justify-content:space-between;margin-top:24px;font-size:12px}
+#stampa .firma div{width:45%;border-top:1px solid #111;padding-top:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand"><b>BRUNELLESCHI</b><span>Preventivi persiane alluminio</span></div>
+  <div class="partner" id="hdrPartner"></div>
+  <button class="upl" id="bRil" title="Leggi scheda di rilievo (PDF compilato, scansione o foto) e crea il preventivo"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M8 9h8M8 12h8M8 15h5"/></svg><span>Leggi rilievo</span></button>
+  <input type="file" id="fRil" accept="application/pdf,.pdf,image/*" multiple hidden>
+  <button class="upl" id="bImp" title="Carica offerte Starpur per aggiornare i prezzi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg><span>Offerte Starpur</span></button>
+  <input type="file" id="fImp" accept="application/pdf,.pdf" multiple hidden>
+  <nav class="tabs" role="tablist">
+    <button data-v="prev" class="on">Preventivo</button>
+    <button data-v="arch">Archivio</button>
+    <button data-v="imp">Impostazioni</button>
+  </nav>
+  <div class="sync" id="sync"><i></i><span>Solo su questo dispositivo</span></div>
+</header>
+
+<main>
+<section class="view on" id="v-prev">
+  <div class="row" style="margin-top:6px">
+    <h2 style="margin:0" id="prevTitle">Nuovo preventivo</h2>
+    <span class="sp"></span>
+    <button class="btn sm" id="bNuovo">Nuovo preventivo</button>
+  </div>
+  <h2>Cliente</h2>
+  <div class="panel grid g3">
+    <label class="f">Nome e cognome / ragione sociale<input id="cNome" autocomplete="off"></label>
+    <label class="f">Codice fiscale / P.IVA<input id="cCF" autocomplete="off" style="text-transform:uppercase"></label>
+    <label class="f">Indirizzo cantiere<input id="cInd" autocomplete="off"></label>
+    <label class="f">Telefono<input id="cTel" inputmode="tel"></label>
+    <label class="f">Email<input id="cMail" inputmode="email"></label>
+    <label class="f">Riferimento / cantiere<input id="cRif"></label>
+    <label class="f">Data<input id="cData" type="date"></label>
+  </div>
+  <div class="twocol">
+    <div>
+      <div class="row"><h2>Persiane</h2><span class="sp"></span><button class="btn y" id="bAdd">Aggiungi persiana</button></div>
+      <div class="panel" id="voci"></div>
+    </div>
+    <div>
+      <h2>Riepilogo</h2>
+      <div class="panel">
+        <div class="tot" id="tot"></div>
+        <div class="grid g2" style="margin-top:12px">
+          <label class="f">Ricarico sulle persiane (%)<input id="qRic" type="number" step="1"></label>
+          <label class="f">Sconto cliente (%)<input id="qSconto" type="number" step="0.5"></label>
+          <label class="f">Montaggio per pezzo (€, netto)<input id="qPosa" type="number" step="5"></label>
+          <label class="f">Trasporto (€, netto)<input id="qTrasp" type="number" step="10"></label>
+          <label class="f">IVA (%)<select id="qIva"><option>10</option><option>22</option><option>4</option><option>0</option></select></label>
+          <label class="f">Validità (giorni)<input id="qVal" type="number"></label>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn y" id="bSalva">Salva preventivo</button>
+          <button class="btn" id="bPdf">Genera PDF</button>
+        </div>
+        <p class="muted small" style="margin-bottom:0">Costo Starpur = listino stimato dai tuoi ordini (scarto tipico ±3%) meno lo sconto fornitore. Prima dell'ordine conferma con l'offerta Starpur.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-arch">
+  <div class="row"><h2>Preventivi salvati</h2><span class="sp"></span><input id="aCerca" placeholder="Cerca cliente o riferimento" style="background:var(--k2);border:1px solid var(--line);border-radius:6px;padding:9px 10px;min-width:220px"></div>
+  <div class="panel list"><table><thead><tr><th>N.</th><th>Data</th><th>Cliente</th><th>Riferimento</th><th>Pezzi</th><th style="text-align:right">Totale</th><th></th></tr></thead><tbody id="aBody"></tbody></table></div>
+</section>
+
+<section class="view" id="v-imp">
+  <h2>Storico prezzi Starpur</h2>
+  <div class="panel">
+    <div id="stInfo"></div>
+    <div class="drop" id="drop" style="margin-top:12px" tabindex="0" role="button">Trascina qui le offerte Starpur in PDF, oppure tocca per sceglierle.<br><span class="muted small">L'app legge ogni persiana, ti mostra cosa ha trovato e ricalcola il listino.</span></div>
+    <div id="stLog" style="margin-top:10px"></div>
+    <div class="row" style="margin-top:10px"><button class="btn sm" id="bCsv">Scarica storico (Excel/CSV)</button><button class="btn sm" id="bRical">Ricalcola listino ora</button></div>
+  </div>
+
+  <h2>Sconto fornitore Starpur</h2>
+  <div class="panel grid g4">
+    <label class="f">Primo sconto (%)<input id="sS1" type="number"></label>
+    <label class="f">Secondo sconto (%)<input id="sS2" type="number"></label>
+    <div class="muted small" style="grid-column:span 2;align-self:end">I tuoi ordini usano 50% + 20% (in alcuni casi 50% + 30%). Il costo netto è listino × (1 − sconto 1) × (1 − sconto 2).</div>
+  </div>
+
+  <h2>Intestazione preventivo</h2>
+  <div class="panel grid g2">
+    <label class="f">Ragione sociale<input id="sAz"></label>
+    <label class="f">Dati azienda (indirizzo, P.IVA, contatti)<textarea id="sAzDati" rows="3"></textarea></label>
+    <div class="f" style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px;color:var(--mut);font-size:14px">Logo fornitore (Starpur) in alto nell'app e nel PDF
+      <div class="row"><div id="logoPrev" style="min-height:40px"></div><button class="btn sm" id="bLogo" type="button">Carica logo</button><button class="btn sm del" id="bLogoDel" type="button">Rimuovi</button><input type="file" id="fLogo" accept="image/*" hidden></div>
+      <span class="small">Usa il file ufficiale del fornitore (PNG o JPG). Finché non lo carichi appare la scritta "Fornitore STARPUR".</span></div>
+    <label class="f" style="grid-column:1/-1">Note e condizioni in fondo al preventivo<textarea id="sNote" rows="5"></textarea></label>
+  </div>
+
+  <h2>Formula listino Starpur</h2>
+  <div class="panel">
+    <p class="muted small" style="margin-top:0">Listino = base × superficie<sup>esp.</sup> × coefficienti. Ricavato da 48 persiane dei tuoi ordini Starpur (gen – set 2026).</p>
+    <div class="grid g4" id="sFormula"></div>
+  </div>
+
+  <h2>Optional (prezzi di listino)</h2>
+  <div class="panel grid g4" id="sOpt"></div>
+
+  <h2>Valori predefiniti nuovo preventivo</h2>
+  <div class="panel grid g4">
+    <label class="f">Ricarico sulle persiane (%)<input id="dRic" type="number"></label>
+    <label class="f">Montaggio per pezzo (€)<input id="dPosa" type="number"></label>
+    <label class="f">IVA (%)<input id="dIva" type="number"></label>
+  </div>
+  <div class="row" style="margin-top:14px"><button class="btn y" id="bSalvaImp">Salva impostazioni</button><button class="btn" id="bResetImp">Ripristina valori calcolati</button></div>
+</section>
+</main>
+
+<div class="overlay" id="ov">
+ <div class="inner">
+  <div class="row"><h2 style="margin:0" id="eTitle">Nuova persiana</h2><span class="sp"></span><button class="btn sm" id="eClose">Chiudi</button></div>
+  <div class="editor" style="margin-top:12px">
+    <div>
+      <div class="stage">
+        <div class="views">
+          <figure><div id="vInt"></div><figcaption>Vista interna</figcaption></figure>
+          <figure><div id="vExt"></div><figcaption>Vista esterna</figcaption></figure>
+        </div>
+        <div class="est">
+          <div><div class="sub">Costo Starpur netto (cad.)</div><div class="big" id="eCost">—</div><div class="sub" id="eList"></div></div>
+          <div style="text-align:right"><div class="sub">Prezzo persiana al cliente (cad., IVA escl.) – ricarico <b id="eRic"></b></div><div class="big" id="eCli">—</div></div>
+        </div>
+        <div class="simili" id="eSim"></div>
+      </div>
+    </div>
+    <div class="grid" style="align-content:start">
+      <div class="panel grid g2">
+        <label class="f" style="grid-column:1/-1">Posizione / ambiente<input id="eNome" placeholder="Es. Soggiorno, Camera 1"></label>
+        <label class="f">Tipologia<select id="eTipo">
+          <option value="F1">Finestra 1 anta</option>
+          <option value="F2">Finestra 2 ante</option>
+          <option value="B1">Balcone 1 anta</option>
+          <option value="B2">Balcone 2 ante</option>
+          <option value="SF">Scorrevole finestra 1 anta</option>
+          <option value="SB">Scorrevole balcone 1 anta</option>
+        </select></label>
+        <label class="f">Modello MyShadow<select id="eMod"></select></label>
+        <label class="f">Larghezza (mm, esterno telaio)<input id="eW" type="number" inputmode="numeric" step="5"></label>
+        <label class="f">Altezza (mm, esterno telaio)<input id="eH" type="number" inputmode="numeric" step="5"></label>
+        <label class="f">Quantità<input id="eQ" type="number" min="1" step="1"></label>
+        <label class="f" id="eLatoBox">Cardini / apertura<select id="eLato"><option value="sx">Cardini a sinistra</option><option value="dx">Cardini a destra</option></select></label>
+      </div>
+
+      <div class="panel">
+        <h3>Colore</h3>
+        <label class="f">Colore persiana<select id="eCol"></select></label>
+        <div class="colors" id="eColSw"></div>
+        <label class="f" id="eColAltroBox" style="margin-top:8px;display:none">Codice RAL / finitura<input id="eColAltro" placeholder="Es. RAL 7032 grigio ghiaia, effetto marmo"></label>
+        <label class="chk" style="margin-top:8px"><input type="checkbox" id="eRalAltri">Altri RAL e Marmo (maggiorazione listino)</label>
+        <label class="f" style="margin-top:8px">Colore accessori (cardini, chiusura)<select id="eAcc"><option value="nero">Nero (standard)</option><option value="ral">RAL come la persiana (meccanismo RAL)</option></select></label>
+      </div>
+
+      <div class="panel grid g2" id="eChiusBox">
+        <h3 style="grid-column:1/-1;margin:0">Chiusura</h3>
+        <label class="f">Tipo di chiusura<select id="eChius"><option value="spag">Spagnoletta</option><option value="crem">Cremonese</option></select></label>
+        <label class="f">Altezza ferramenta di chiusura<select id="eChHMode"><option value="std">Standard</option><option value="custom">Altra misura</option></select></label>
+        <label class="f" id="eChHBox" style="display:none">Altezza da terra (mm, dal basso della persiana)<input id="eChH" type="number" inputmode="numeric" step="10"></label>
+      </div>
+
+      <div class="panel grid g2">
+        <h3 style="grid-column:1/-1;margin:0">Optional</h3>
+        <label class="chk" style="grid-column:1/-1"><input type="checkbox" id="eLam">Lamelle orientabili</label>
+        <label class="f">Fuori squadro (n. inclinazioni)<input id="eFs" type="number" min="0" step="1"></label>
+        <label class="f">Bandella a croce c/gomito + cardine su piastra (pz)<input id="eBand" type="number" min="0" step="1"></label>
+        <label class="f">Paletto incassato su anta passiva (pz)<input id="ePal" type="number" min="0" step="1"></label>
+        <label class="f">Cerniera centrale a croce – impacchettamento (pz)<input id="eCer" type="number" min="0" step="1"></label>
+        <label class="f">Fermapersiana interno (pz)<input id="eFpi" type="number" min="0" step="1"></label>
+        <label class="f" style="grid-column:1/-1">Note sulla voce<input id="eNote" placeholder="Es. cardini a muro, battuta in luce"></label>
+      </div>
+      <div class="row"><button class="btn y" id="eSave">Salva persiana</button><button class="btn" id="eCancel">Annulla</button></div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<div class="overlay" id="ovImp"><div class="inner">
+  <div class="row"><h2 style="margin:0">Offerte Starpur caricate</h2><span class="sp"></span><button class="btn sm" onclick="chiudiImp()">Chiudi</button></div>
+  <p class="muted small">Controlla le persiane lette. La colonna "Formula attuale" mostra il listino che avrebbe stimato l'app.</p>
+  <div id="impBody"></div></div></div>
+
+<div class="overlay" id="ovRil"><div class="inner">
+  <div class="row"><h2 style="margin:0">Scheda di rilievo → preventivo</h2><span class="sp"></span><button class="btn sm" onclick="chiudiRil()">Chiudi</button></div>
+  <div id="rilBody" style="margin-top:10px"></div></div></div>
+<div id="stampa"></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ============================================================
+   CONFIGURAZIONE FIREBASE (stesso progetto delle altre app Brunelleschi)
+   Se apiKey resta vuota, l'app salva solo su questo dispositivo.
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "cheklist-brunelleschi.firebaseapp.com",
+  projectId: "cheklist-brunelleschi",
+  storageBucket: "cheklist-brunelleschi.appspot.com",
+  messagingSenderId: "",
+  appId: ""
+};
+
+const STORICO = [["PODESTA","30/01/26","B2","Fiorentina storica",1395,2785,1597,"50%+30%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","B2","Fiorentina storica",1385,2795,1597,"50%+30%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","B2","Fiorentina storica",975,2735,1344,"50%+30%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","B2","Fiorentina storica",1385,2545,1510,"50%+30%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","B2","Fiorentina storica",1385,2530,1510,"50%+30%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","B2","Fiorentina storica",1375,2285,1359,"50%+30%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","F2","Rustica",1385,1970,1262,"50%+20%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","F2","Rustica",1375,1980,1262,"50%+20%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","F2","Rustica",1375,1990,1262,"50%+20%","RAL 7001 grigio argento opaco"],["PODESTA","30/01/26","F1","Fiorentina storica",540,845,328,"50%+30%","RAL 7001 grigio argento opaco"],["FALCONE","13/05/26","B2","Classica",1194,2440,1613,"50%+20%","S701 Grigio Argento Soft"],["FALCONE","13/05/26","B2","Classica",1194,2130,1412,"50%+20%","S701 Grigio Argento Soft"],["SIGNA","13/05/26","F2","Fiorentina con telaio",870,1144,857,"50%+20%","Ral 6005K verde opaco Slam"],["SIGNA","13/05/26","F2","Fiorentina con telaio",850,1080,807,"50%+20%","Ral 6005K verde opaco Slam"],["SIGNA","13/05/26","F2","Fiorentina con telaio",870,1125,857,"50%+20%","Ral 6005K verde opaco Slam"],["TANI","22/06/26","F2","Fiorentina con telaio",1090,1992,1282,"50%+20%","Ral 6005K verde opaco Slam"],["TANI","22/06/26","F1","Fiorentina con telaio",490,995,426,"50%+20%","Ral 6005K verde opaco Slam"],["TANI","22/06/26","B2","Fiorentina con telaio",1090,2883,1792,"50%+20%","Ral 6005K verde opaco Slam"],["FIORAVANTI","22/06/26","F2","Fiorentina con telaio",1090,2004,1327,"50%+20%","Ral 6005K verde opaco Slam"],["FIORAVANTI","22/06/26","F1","Fiorentina con telaio",504,995,455,"50%+20%","Ral 6005K verde opaco Slam"],["FIORAVANTI","22/06/26","B2","Fiorentina con telaio",1090,2900,1792,"50%+20%","Ral 6005K verde opaco Slam"],["IMONDI","22/06/26","F2","Fiorentina con telaio",1090,1992,1282,"50%+20%","Ral 6005K verde opaco Slam"],["IMONDI","22/06/26","F1","Fiorentina con telaio",490,995,426,"50%+20%","Ral 6005K verde opaco Slam"],["IMONDI","22/06/26","F2","Fiorentina con telaio",1090,1995,1282,"50%+20%","Ral 6005K verde opaco Slam"],["IMONDI","22/06/26","B2","Fiorentina con telaio",1092,2884,1792,"50%+20%","Ral 6005K verde opaco Slam"],["SAMIR","10/07/26","B2","Fiorentina con telaio",1045,2655,1703,"50%+20%","RAL 7032 grigio ghiaia"],["PERSIANE PZ 6","07/09/26","B2","Rustica",1185,2495,1525,"50%+20%","Ral 6005K verde opaco Slam"],["PERSIANE PZ 6","07/09/26","F2","Rustica",1185,1490,953,"50%+20%","Ral 6005K verde opaco Slam"],["PERSIANE PZ 6","07/09/26","B1","Rustica",680,2490,847,"50%+20%","Ral 6005K verde opaco Slam"],["PERSIANE PZ 6","07/09/26","F1","Rustica",685,1490,537,"50%+20%","Ral 6005K verde opaco Slam"],["PERSIANE PZ 6","07/09/26","B2","Rustica",1380,2395,1602,"50%+20%","Ral 6005K verde opaco Slam"],["PERSIANE PZ 6","07/09/26","B2","Rustica",1180,2390,1471,"50%+20%","Ral 6005K verde opaco Slam"],["ENRICO ANGIOLI","21/11/25","B2","Classica",1080,2150,1246,"50%+30%","RAL 9010 bianco puro opaco"],["ENRICO ANGIOLI","21/11/25","F1","Classica",530,1280,457,"50%+30%","RAL 9010 bianco puro opaco"],["ENRICO ANGIOLI","21/11/25","F2","Classica",1050,1220,788,"50%+30%","RAL 9010 bianco puro opaco"],["ENRICO ANGIOLI","21/11/25","B2","Classica",900,2050,1157,"50%+30%","RAL 9010 bianco puro opaco"],["CONDOMINIO 2309","23/09/26","F2","Classica",1350,1330,1023,"50%+20%","Grigio Argento Soft"],["CONDOMINIO 2309","23/09/26","F2","Classica",1350,1330,1023,"50%+20%","Grigio Argento Soft"],["CONDOMINIO 2309","23/09/26","F1","Classica",780,800,478,"50%+20%","Grigio Argento Soft"],["CONDOMINIO 2309","23/09/26","F2","Classica",950,1350,864,"50%+20%","Grigio Argento Soft"],["CONDOMINIO 2309","23/09/26","B2","Classica",1100,2350,1490,"50%+20%","Grigio Argento Soft"],["CONDOMINIO 2309","23/09/26","B1","Classica",850,2350,1060,"50%+20%","Grigio Argento Soft"],["CONDOMINIO 2309","23/09/26","SF","Scorrevole",850,1350,847,"50%+20%","Grigio Argento Soft"],["CONDOMINIO 2309","23/09/26","SB","Scorrevole",700,2350,1019,"50%+20%","Grigio Argento Soft"],["FANCIULLACCI","10/07/26","B1","Fiorentina con telaio",776,2260,956,"50%+20%","S817 Marrone medio soft DFV"],["FANCIULLACCI","10/07/26","B2","Fiorentina con telaio",1200,2260,1536,"50%+20%","S817 Marrone medio soft DFV"],["FANCIULLACCI","10/07/26","F2","Fiorentina con telaio",1400,1380,1080,"50%+20%","S817 Marrone medio soft DFV"],["FANCIULLACCI","10/07/26","F2","Fiorentina con telaio",980,1380,936,"50%+20%","S817 Marrone medio soft DFV"]]; // [rif,data,tipo,modello,L,H,listino,sconto,colore]
+
+const TIPI={F1:"Finestra 1 anta",F2:"Finestra 2 ante",B1:"Balcone 1 anta",B2:"Balcone 2 ante",SF:"Scorrevole finestra 1 anta",SB:"Scorrevole balcone 1 anta"};
+const MODELLI=["Classica","Fiorentina con telaio","Fiorentina storica","Rustica","Scorrevole"];
+const COLORI=[
+  {n:"RAL 6005K verde opaco Slam",h:"#2E4A3A"},
+  {n:"RAL 9010 bianco puro opaco",h:"#F0ECE0"},
+  {n:"RAL 7001 grigio argento opaco",h:"#8C979E"},
+  {n:"S701 Grigio Argento Soft",h:"#9A9FA3"},
+  {n:"S817 Marrone medio soft DFV",h:"#6B4A33"},
+  {n:"RAL 8017 marrone cioccolato",h:"#46322C"},
+  {n:"RAL 7016 grigio antracite",h:"#3B4247"},
+  {n:"RAL 7032 grigio ghiaia",h:"#B8B6A3",altri:1},
+  {n:"Altro RAL / Marmo / effetto legno",h:"#A58A6A",altri:1,altro:1}
+];
+const n2=t=>t==="F2"||t==="B2", bal=t=>t==="B1"||t==="B2"||t==="SB", scor=t=>t==="SF"||t==="SB";
+
+const DEF_SETTINGS={
+  base:585.91, expA:0.566, ante2:1.267, balcone:1.129,
+  modelli:{"Classica":1,"Fiorentina con telaio":1.107,"Fiorentina storica":0.883,"Rustica":0.956,"Scorrevole":1.247},
+  opt:{ralAltri:10, meccRal:5, fuoriSq:339.83, bandella:16.76, paletto:37.02, cerniera:12.67, lamelle:0, cremonese:0, fermaInt:0},
+  s1:50, s2:20,
+  ric:100, posa:0, iva:10, validita:30, logoPartner:"",
+  az:"Brunelleschi Infissi Srl",
+  azDati:"Viale dei Mille 59 – 50131 Firenze\nP.IVA 07309740483",
+  note:"Prezzi IVA esclusa salvo diversa indicazione.\nMisure riferite all'esterno del telaio in alluminio, da confermare con rilievo in cantiere.\nPagamento: 50% alla conferma, saldo a fine posa.\nTempi di consegna indicativi: 4-6 settimane dalla conferma d'ordine."
+};
+
+function load(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function uid(){return Math.random().toString(36).slice(2,10)}
+const $=id=>document.getElementById(id);
+const eur=n=>(isFinite(n)?n:0).toLocaleString("it-IT",{style:"currency",currency:"EUR"});
+const esc=s=>String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+function toast(t){const e=$("toast");e.textContent=t;e.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display="none",2400)}
+function withTimeout(p,ms){return Promise.race([p,new Promise((_,r)=>setTimeout(()=>r(new Error("timeout")),ms))])}
+function fixS(x){const s=Object.assign(structuredClone(DEF_SETTINGS),x||{});s.modelli=Object.assign({},DEF_SETTINGS.modelli,s.modelli);s.opt=Object.assign({},DEF_SETTINGS.opt,s.opt);return s}
+
+let S=fixS(load("bru_pers_settings"));
+let Q=newQuote();
+let ARCH=load("bru_pers_archivio")||[];
+let STORICO_EXTRA=load("bru_pers_storico_extra")||[];
+let IMPORTI=load("bru_pers_importi")||[];
+let editing=null,draft=null,db=null,pending=[];
+function allStorico(){return STORICO.concat(STORICO_EXTRA)}
+
+function newQuote(){return {id:uid(),num:"",cliente:{nome:"",cf:"",ind:"",tel:"",mail:"",rif:"",data:new Date().toISOString().slice(0,10)},voci:[],ric:S.ric,sconto:0,posa:S.posa,trasp:0,iva:S.iva,validita:S.validita}}
+const col=n=>COLORI.find(c=>c.n===n)||COLORI[0];
+function shade(hex,f){const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;r=Math.min(255,Math.round(r*f));g=Math.min(255,Math.round(g*f));b=Math.min(255,Math.round(b*f));return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+
+/* ---------------- prezzo ---------------- */
+function listinoBase(v,SS=S){
+  const W=+v.W||0,H=+v.H||0;if(W<200||H<200)return 0;
+  const A=W*H/1e6;
+  return SS.base*Math.pow(A,SS.expA)*(n2(v.tipo)?SS.ante2:1)*(bal(v.tipo)?SS.balcone:1)*(SS.modelli[scor(v.tipo)?"Scorrevole":v.mod]||1);
+}
+function prezzi(v){
+  const b=Math.round(listinoBase(v));
+  if(!b)return {listino:0,netto:0,righe:[]};
+  const o=S.opt,righe=[["Persiana",b]];
+  if(v.ralAltri)righe.push(["Altri RAL e Marmo "+o.ralAltri+"%",b*o.ralAltri/100]);
+  if(v.acc==="ral")righe.push(["Meccanismo RAL "+o.meccRal+"%",b*o.meccRal/100]);
+  if(v.lam&&o.lamelle)righe.push(["Lamelle orientabili "+o.lamelle+"%",b*o.lamelle/100]);
+  if(+v.fs)righe.push([`Fuori squadro (${v.fs} incl.)`,v.fs*o.fuoriSq]);
+  if(+v.band)righe.push([`Bandella a croce + cardine (${v.band} pz)`,v.band*o.bandella]);
+  if(+v.pal)righe.push([`Paletto incassato (${v.pal} pz)`,v.pal*o.paletto]);
+  if(+v.cer)righe.push([`Cerniera centrale a croce (${v.cer} pz)`,v.cer*o.cerniera]);
+  if(v.chius==="crem"&&!scor(v.tipo)&&o.cremonese)righe.push(["Chiusura a cremonese",o.cremonese]);
+  if(+v.fpi&&o.fermaInt)righe.push([`Fermapersiana interno (${v.fpi} pz)`,v.fpi*o.fermaInt]);
+  const listino=righe.reduce((s,r)=>s+r[1],0);
+  const netto=Math.round(listino*(1-S.s1/100)*(1-S.s2/100)*100)/100;
+  return {listino,netto,righe};
+}
+function calcQuote(q){
+  const pezzi=q.voci.reduce((s,v)=>s+(+v.q||0),0);
+  const k=(1+(+q.ric||0)/100)*(1-(+q.sconto||0)/100);
+  const righe=q.voci.map(v=>{const p=prezzi(v);const u=Math.round(p.netto*k*100)/100;return {v,c:p.netto,l:p.listino,u,t:u*(+v.q||0)}});
+  const costo=righe.reduce((s,r)=>s+r.c*(+r.v.q||0),0);
+  const listino=righe.reduce((s,r)=>s+r.l*(+r.v.q||0),0);
+  const persiane=righe.reduce((s,r)=>s+r.t,0);
+  const montaggio=(+q.posa||0)*pezzi, trasporto=+q.trasp||0;
+  const imp=persiane+montaggio+trasporto, iva=imp*(+q.iva||0)/100;
+  return {pezzi,listino,costo,righe,persiane,montaggio,trasporto,imp,iva,tot:imp+iva,margine:persiane-costo};
+}
+
+/* ---------------- disegno persiana ---------------- */
+function drawPers(v,side,box=300){
+  const W=Math.max(+v.W||1000,200),H=Math.max(+v.H||1400,200),ext=side==="ext";
+  const c=col(v.col),pad=34,s=Math.min((box-pad*2)/W,(box*1.35-pad*2)/H);
+  const w=W*s,h=H*s,x0=pad,y0=pad+(scor(v.tipo)?10:0),vw=w+pad*2+10,vh=h+pad*2+(scor(v.tipo)?10:0);
+  const fill=c.h,stroke=shade(c.h,.6),dark=shade(c.h,.72),light=shade(c.h,1.18);
+  const telaio=v.mod==="Fiorentina con telaio"||scor(v.tipo);
+  let o=`<svg viewBox="0 0 ${vw} ${vh}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${TIPI[v.tipo]} vista ${ext?"esterna":"interna"}">`;
+  // muro/vano
+  o+=`<rect x="${x0-6}" y="${y0-6}" width="${w+12}" height="${h+12}" fill="none" stroke="#bbb" stroke-dasharray="3 3"/>`;
+  if(scor(v.tipo)){o+=`<rect x="${x0-6}" y="${y0-12}" width="${w*2}" height="7" fill="${dark}" stroke="${stroke}"/>`}
+  let ix=x0,iy=y0,iw=w,ih=h;
+  if(telaio&&!scor(v.tipo)){const t=Math.max(4,45*s);o+=`<rect x="${x0}" y="${y0}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="1.2"/>`;ix+=t;iy+=t;iw-=2*t;ih-=2*t}
+  const n=n2(v.tipo)?2:1,aw=iw/n,st=Math.max(4,55*s);
+  let lato=v.lato||"sx";if(ext)lato=lato==="sx"?"dx":"sx";
+  for(let i=0;i<n;i++){
+    const ax=ix+i*aw;
+    o+=`<rect x="${ax+.5}" y="${iy+.5}" width="${aw-1}" height="${ih-1}" fill="${fill}" stroke="${stroke}" stroke-width="1"/>`;
+    const gx=ax+st,gy=iy+st,gw=aw-2*st,gh=ih-2*st;
+    // traversi
+    let tr=[];if(v.mod==="Rustica")tr=[.5];else if(v.mod&&v.mod.startsWith("Fiorentina"))tr=[.32];else if(bal(v.tipo))tr=[.36];
+    const zone=[];let top=gy;tr.map(f=>gy+gh*(1-f)).sort((a,b)=>a-b).forEach(yy=>{zone.push([top,yy-st*.4]);top=yy+st*.4;o+=`<rect x="${gx}" y="${yy-st*.4}" width="${gw}" height="${st*.8}" fill="${fill}" stroke="${stroke}" stroke-width=".7"/>`});zone.push([top,gy+gh]);
+    zone.forEach(([a,b])=>{o+=`<rect x="${gx}" y="${a}" width="${gw}" height="${b-a}" fill="${dark}"/>`;
+      const step=Math.max(3.2,55*s*(v.lam?1.2:1));for(let yy=a+step*.5;yy<b-1;yy+=step){o+=`<rect x="${gx}" y="${yy-step*.28}" width="${gw}" height="${step*.56}" fill="${light}" stroke="${stroke}" stroke-width=".35"/>`}});
+    // cardini sul lato esterno dell'anta
+    const hingeLeft=n===2?(i===0?!ext:ext):lato==="sx";
+    const hx=hingeLeft?ax-2:ax+aw-2;
+    if(!scor(v.tipo))[.14,.86].concat(bal(v.tipo)?[.5]:[]).forEach(f=>{o+=`<rect x="${hx}" y="${iy+ih*f-6}" width="4" height="12" rx="1" fill="${v.acc==="ral"?fill:"#1d1d1d"}" stroke="#000" stroke-width=".4"/>`});
+  }
+  // chiusura (vista interna): spagnoletta o cremonese, all'altezza scelta
+  if(!ext&&!scor(v.tipo)){const sx=n===2?ix+aw+st*.3:(lato==="sx"?ix+aw-st*.55:ix+st*.25),cc=v.acc==="ral"?shade(c.h,.5):"#222",rw=Math.max(2,st*.25);
+    const hy=Math.min(Math.max(y0+h-chH(v)*s,iy+st+10),iy+ih-st-10);
+    o+=`<rect x="${sx}" y="${iy+st}" width="${rw}" height="${ih-2*st}" fill="${cc}"/>`;
+    if(v.chius==="crem"){o+=`<rect x="${sx-4}" y="${hy-9}" width="${rw+8}" height="18" rx="2" fill="${cc}"/><rect x="${sx+rw/2-1.5}" y="${hy-2}" width="${n===2||lato==="sx"?-16:16}" height="4" rx="2" fill="${cc}"/>`}
+    else{o+=`<rect x="${sx-3}" y="${hy-8}" width="8" height="16" rx="2" fill="${cc}"/><path d="M${sx+rw/2} ${hy} q ${n===2||lato==="sx"?-12:12} 0 ${n===2||lato==="sx"?-12:12} 8" stroke="${cc}" stroke-width="3" fill="none" stroke-linecap="round"/>`}
+    // fermapersiana interno
+    if(+v.fpi){const fx=n===2?ix+aw-10:(lato==="sx"?ix+aw-st-8:ix+st+2);o+=`<rect x="${fx}" y="${iy+ih-st-12}" width="8" height="8" rx="4" fill="${cc}"/>`}
+  }
+  if(scor(v.tipo)){const yy=y0+h*.5,d=(v.lato==="dx")!==ext?1:-1,x1=x0+w*(d>0?.25:.75),x2=x0+w*(d>0?.75:.25);
+    o+=`<path d="M${x1} ${yy} L${x2} ${yy} M${x2-8*d} ${yy-6} L${x2} ${yy} L${x2-8*d} ${yy+6}" stroke="#fff" stroke-width="2.4" fill="none"/>`}
+  const qy=y0+h+16,qx=x0+w+14;
+  o+=`<g stroke="#555" stroke-width=".8"><line x1="${x0}" x2="${x0+w}" y1="${qy}" y2="${qy}"/><line x1="${x0}" x2="${x0}" y1="${qy-5}" y2="${qy+5}"/><line x1="${x0+w}" x2="${x0+w}" y1="${qy-5}" y2="${qy+5}"/><line x1="${qx}" x2="${qx}" y1="${y0}" y2="${y0+h}"/><line x1="${qx-5}" x2="${qx+5}" y1="${y0}" y2="${y0}"/><line x1="${qx-5}" x2="${qx+5}" y1="${y0+h}" y2="${y0+h}"/></g>`;
+  o+=`<text x="${x0+w/2}" y="${qy+14}" text-anchor="middle" font-size="13" font-family="Arial" fill="#333">${W}</text><text x="${qx+4}" y="${y0+h/2}" font-size="13" font-family="Arial" fill="#333" transform="rotate(90 ${qx+4} ${y0+h/2})" text-anchor="middle">${H}</text>`;
+  return o+"</svg>";
+}
+
+function stdChH(v){return bal(v.tipo)?1050:Math.round((+v.H||0)/2/10)*10}
+function chH(v){return v.chH&&v.chH.mode==="custom"&&+v.chH.h>0?+v.chH.h:stdChH(v)}
+function nomeCol(v){return col(v.col).altro?(v.colAltro||"RAL da definire"):v.col}
+function descr(v){
+  let t=`Persiana in alluminio MyShadow ${scor(v.tipo)?"Scorrevole":v.mod}, ${TIPI[v.tipo].toLowerCase()}, ${v.W} × ${v.H} mm (esterno telaio). Verniciata ${nomeCol(v)}, accessori ${v.acc==="ral"?"in RAL come la persiana":"neri"}.`;
+  if(!scor(v.tipo)&&!n2(v.tipo))t+=` Cardini a ${v.lato==="dx"?"destra":"sinistra"}.`;
+  if(scor(v.tipo))t+=` Apertura verso ${v.lato==="dx"?"destra":"sinistra"}.`;
+  if(!scor(v.tipo))t+=` Chiusura a ${v.chius==="crem"?"cremonese":"spagnoletta"}, ferramenta a ${chH(v)} mm da terra${v.chH&&v.chH.mode==="custom"?"":" (standard)"}.`;
+  if(v.lam)t+=" Lamelle orientabili.";
+  if(+v.fpi)t+=` Fermapersiana interno (${v.fpi} pz).`;
+  if(+v.fs)t+=` Esecuzione fuori squadro (${v.fs} inclinazioni).`;
+  if(+v.band)t+=` Bandella a croce con gomito e cardine su piastra (${v.band} pz).`;
+  if(+v.pal)t+=` Paletto incassato su anta passiva (${v.pal} pz).`;
+  if(+v.cer)t+=` Cerniera centrale a croce per impacchettamento (${v.cer} pz).`;
+  if(v.note)t+=" "+v.note+".";
+  return t;
+}
+function simili(v){
+  const A=(+v.W)*(+v.H),m=scor(v.tipo)?"Scorrevole":v.mod;
+  return allStorico().filter(r=>r[2]===v.tipo).map(r=>{let d=Math.abs(r[4]*r[5]-A)/A;if(r[3]!==m)d+=.3;return {r,d}}).sort((a,b)=>a.d-b.d).slice(0,3);
+}
+
+/* ---------------- render ---------------- */
+function bindCliente(){
+  const m={cNome:"nome",cCF:"cf",cInd:"ind",cTel:"tel",cMail:"mail",cRif:"rif",cData:"data"};
+  for(const [id,k] of Object.entries(m)){$(id).value=Q.cliente[k]||"";$(id).oninput=e=>{Q.cliente[k]=e.target.value;autosave()}}
+  const n={qRic:"ric",qSconto:"sconto",qPosa:"posa",qTrasp:"trasp",qIva:"iva",qVal:"validita"};
+  for(const [id,k] of Object.entries(n)){$(id).value=Q[k];$(id).oninput=e=>{Q[k]=+e.target.value;renderVoci();autosave()}}
+  $("prevTitle").textContent=Q.num?`Preventivo ${Q.num}`:"Nuovo preventivo";
+}
+function renderVoci(){
+  const r=calcQuote(Q),box=$("voci");
+  if(!Q.voci.length)box.innerHTML=`<div class="empty">Nessuna persiana inserita.<br><br><button class="btn y" onclick="openEditor()">Aggiungi la prima persiana</button></div>`;
+  else box.innerHTML=r.righe.map((x,i)=>{const v=x.v;return `<div class="voce">
+    <div class="mini">${drawPers(v,"int",160)}${drawPers(v,"ext",160)}</div>
+    <div><div class="t">${i+1}. ${esc(v.nome||TIPI[v.tipo])} <span class="muted" style="font-weight:400">× ${v.q}</span></div>
+      <div class="muted small">${TIPI[v.tipo]} · ${v.W}×${v.H} mm · MyShadow ${scor(v.tipo)?"Scorrevole":v.mod}</div>
+      <div class="small"><span class="swatch" style="background:${col(v.col).h}"></span>${esc(nomeCol(v))}${v.ralAltri?" · +RAL":""}${v.acc==="ral"?" · accessori RAL":""}${v.lam?" · lamelle orient.":""}</div>
+      <div class="row" style="margin-top:6px"><button class="btn sm" onclick="openEditor(${i})">Modifica</button><button class="btn sm" onclick="dupVoce(${i})">Duplica</button><button class="btn sm del" onclick="delVoce(${i})">Elimina</button></div></div>
+    <div class="price"><div class="muted small">Listino ${eur(x.l)} · netto ${eur(x.c)}</div><b>${eur(x.t)}</b><div class="muted small">${eur(x.u)} cad.</div></div></div>`}).join("");
+  $("tot").innerHTML=`
+    <div class="k">Persiane (${r.pezzi} pz) – listino Starpur</div><div class="v">${eur(r.listino)}</div>
+    <div class="k">Sconto fornitore ${S.s1}% + ${S.s2}%</div><div class="v">− ${eur(r.listino-r.costo)}</div>
+    <div class="k"><b>Costo netto Starpur</b></div><div class="v"><b>${eur(r.costo)}</b></div>
+    <div class="hr"></div>
+    <div class="k">Persiane con ricarico ${Q.ric}%${+Q.sconto?` e sconto ${Q.sconto}%`:""}</div><div class="v">${eur(r.persiane)}</div>
+    <div class="k">Montaggio (${r.pezzi} pz, netto)</div><div class="v">${eur(r.montaggio)}</div>
+    <div class="k">Trasporto (netto)</div><div class="v">${eur(r.trasporto)}</div>
+    <div class="k">Imponibile cliente</div><div class="v">${eur(r.imp)}</div>
+    <div class="k">IVA ${Q.iva}%</div><div class="v">${eur(r.iva)}</div>
+    <div class="k grand">Totale</div><div class="v grand">${eur(r.tot)}</div>
+    <div class="hr"></div>
+    <div class="k">Margine sulle persiane</div><div class="v" style="color:${r.margine>=0?'var(--ok)':'var(--warn)'}">${eur(r.margine)}</div>`;
+}
+function dupVoce(i){const v=structuredClone(Q.voci[i]);v.id=uid();Q.voci.splice(i+1,0,v);renderVoci();autosave()}
+function delVoce(i){if(!confirm("Eliminare questa persiana dal preventivo?"))return;Q.voci.splice(i,1);renderVoci();autosave()}
+
+/* ---------------- editor ---------------- */
+function openEditor(i){
+  editing=(typeof i==="number")?i:null;
+  draft=editing!==null?structuredClone(Q.voci[i]):{id:uid(),nome:"",tipo:"F2",mod:"Fiorentina con telaio",W:1100,H:1400,q:1,lato:"sx",col:COLORI[0].n,colAltro:"",ralAltri:false,acc:"nero",lam:false,fs:0,band:0,pal:0,cer:0,fpi:0,chius:"spag",chH:{mode:"std",h:""},note:""};
+  draft.chius=draft.chius||"spag";draft.chH=draft.chH||{mode:"std",h:""};draft.fpi=draft.fpi||0;
+  $("eTitle").textContent=editing!==null?"Modifica persiana":"Nuova persiana";
+  $("eMod").innerHTML=MODELLI.filter(m=>m!=="Scorrevole").map(m=>`<option>${m}</option>`).join("");
+  $("eCol").innerHTML=COLORI.map(c=>`<option>${c.n}</option>`).join("");
+  const set={eNome:"nome",eTipo:"tipo",eMod:"mod",eW:"W",eH:"H",eQ:"q",eLato:"lato",eCol:"col",eColAltro:"colAltro",eAcc:"acc",eFs:"fs",eBand:"band",ePal:"pal",eCer:"cer",eFpi:"fpi",eChius:"chius",eNote:"note"};
+  for(const [id,k] of Object.entries(set)){$(id).value=draft[k];$(id).oninput=$(id).onchange=e=>{
+    draft[k]=["W","H","q","fs","band","pal","cer","fpi"].includes(k)?+e.target.value:e.target.value;
+    if(k==="col"){const c=col(draft.col);draft.ralAltri=!!c.altri;$("eRalAltri").checked=draft.ralAltri}
+    if(k==="H"&&!scor(draft.tipo)){const b=draft.H>=2040;if(b!==bal(draft.tipo)){draft.tipo=(b?"B":"F")+(n2(draft.tipo)?"2":"1");$("eTipo").value=draft.tipo}}
+    upd()}}
+  $("eRalAltri").checked=draft.ralAltri;$("eRalAltri").onchange=e=>{draft.ralAltri=e.target.checked;upd()};
+  $("eLam").checked=draft.lam;$("eLam").onchange=e=>{draft.lam=e.target.checked;upd()};
+  $("eChHMode").value=draft.chH.mode;$("eChH").value=draft.chH.h||"";
+  $("eChHMode").onchange=e=>{draft.chH.mode=e.target.value;if(draft.chH.mode==="custom"&&!draft.chH.h){draft.chH.h=stdChH(draft);$("eChH").value=draft.chH.h}upd()};
+  $("eChH").oninput=e=>{draft.chH.h=+e.target.value;upd()};
+  upd();$("ov").classList.add("on");document.body.style.overflow="hidden";$("ov").scrollTop=0;
+}
+function closeEditor(){$("ov").classList.remove("on");document.body.style.overflow="";draft=null}
+function upd(){
+  const sc=scor(draft.tipo);
+  $("eChiusBox").style.display=sc?"none":"grid";
+  $("eChHMode").options[0].text=`Standard (${stdChH(draft)} mm)`;$("eChHBox").style.display=draft.chH.mode==="custom"?"flex":"none";$("eMod").disabled=sc;if(sc)$("eMod").value="Classica";
+  $("eLatoBox").style.display=n2(draft.tipo)?"none":"flex";
+  $("eLato").options[0].text=sc?"Scorre verso sinistra":"Cardini a sinistra";$("eLato").options[1].text=sc?"Scorre verso destra":"Cardini a destra";
+  $("eColAltroBox").style.display=col(draft.col).altro?"flex":"none";
+  $("eColSw").innerHTML=COLORI.map(c=>`<button type="button" title="${c.n}" aria-label="${c.n}" class="${draft.col===c.n?"on":""}" style="background:${c.altro?"repeating-linear-gradient(45deg,#bbb 0 4px,#888 4px 8px)":c.h}" data-n="${c.n}"></button>`).join("");
+  $("eColSw").querySelectorAll("button").forEach(b=>b.onclick=()=>{draft.col=b.dataset.n;$("eCol").value=draft.col;draft.ralAltri=!!col(draft.col).altri;$("eRalAltri").checked=draft.ralAltri;upd()});
+  $("vInt").innerHTML=drawPers(draft,"int");$("vExt").innerHTML=drawPers(draft,"ext");
+  const p=prezzi(draft),k=(1+(+Q.ric||0)/100)*(1-(+Q.sconto||0)/100);
+  $("eCost").textContent=p.netto?eur(p.netto):"—";
+  $("eList").textContent=p.listino?`Listino ${eur(p.listino)} − ${S.s1}% − ${S.s2}%`:"";
+  $("eRic").textContent=(+Q.ric||0)+"%"+(+Q.sconto?`, sconto ${Q.sconto}%`:"");
+  $("eCli").textContent=p.netto?eur(p.netto*k):"—";
+  const sm=simili(draft);
+  $("eSim").innerHTML=sm.length?`<b>Offerte Starpur più simili (listino)</b><table><tr><th>Rif.</th><th>Modello</th><th>Misure</th><th style="text-align:right">Listino</th></tr>${sm.map(({r})=>`<tr><td>${esc(r[0])}</td><td>${esc(r[3])}</td><td>${r[4]}×${r[5]}</td><td style="text-align:right">${eur(r[6])}</td></tr>`).join("")}</table>`:"";
+}
+function saveVoce(){
+  if(!(draft.W>=200&&draft.H>=200)){toast("Inserisci larghezza e altezza in mm");return}
+  if(scor(draft.tipo))draft.mod="Scorrevole";else if(draft.mod==="Scorrevole")draft.mod="Classica";
+  if(!(draft.q>=1))draft.q=1;
+  if(editing!==null)Q.voci[editing]=draft;else Q.voci.push(draft);
+  closeEditor();renderVoci();autosave();toast("Persiana salvata");
+}
+
+/* ---------------- PDF preventivo ---------------- */
+function nextNum(){const y=new Date().getFullYear();const n=ARCH.filter(a=>a.num&&a.num.startsWith("PRS-"+y)).map(a=>+a.num.split("-")[2]||0);return `PRS-${y}-${String((n.length?Math.max(...n):0)+1).padStart(3,"0")}`}
+function stampa(){
+  if(!Q.voci.length){toast("Aggiungi almeno una persiana");return}
+  if(!Q.num){Q.num=nextNum();bindCliente()}
+  saveQuote(true);
+  const r=calcQuote(Q),c=Q.cliente,d=c.data?new Date(c.data).toLocaleDateString("it-IT"):"";
+  $("stampa").innerHTML=`
+   <div class="ph"><div class="logo"><span>B</span>${esc(S.az)}</div><div class="az">${S.logoPartner?`<img src="${S.logoPartner}" alt="Starpur" style="height:34px;display:block;margin:0 0 4px auto">`:`<div style="font-weight:800;letter-spacing:1px;color:#111">Persiane MyShadow – Starpur</div>`}${esc(S.azDati)}</div></div>
+   <div class="meta"><div><h1>Preventivo ${Q.num}</h1>Persiane in alluminio<br>Data ${d} · Validità ${Q.validita} giorni</div>
+   <div style="text-align:right"><b>${esc(c.nome)||"Cliente"}</b><br>${c.cf?"C.F./P.IVA "+esc(c.cf.toUpperCase())+"<br>":""}${esc(c.ind)}<br>${esc(c.tel)} ${esc(c.mail)}<br>${c.rif?"Rif. "+esc(c.rif):""}</div></div>
+   ${r.righe.map((x,i)=>`<div class="it"><div class="dw"><figure>${drawPers(x.v,"int",200)}Interno</figure><figure>${drawPers(x.v,"ext",200)}Esterno</figure></div>
+     <div><h4>${i+1}. ${esc(x.v.nome||TIPI[x.v.tipo])}</h4>${esc(descr(x.v))}</div>
+     <div class="pr">Q.tà ${x.v.q}<br>${eur(x.u)} cad.<br><b>${eur(x.t)}</b></div></div>`).join("")}
+   <div class="tt"><div>Persiane</div><div style="text-align:right">${eur(r.persiane)}</div>${r.montaggio?`<div>Montaggio in opera (${r.pezzi} pz)</div><div style="text-align:right">${eur(r.montaggio)}</div>`:""}${r.trasporto?`<div>Trasporto</div><div style="text-align:right">${eur(r.trasporto)}</div>`:""}<div>Imponibile</div><div style="text-align:right">${eur(r.imp)}</div><div>IVA ${Q.iva}%</div><div style="text-align:right">${eur(r.iva)}</div><div class="g">Totale</div><div class="g" style="text-align:right">${eur(r.tot)}</div></div>
+   <div class="note">${esc(S.note)}</div>
+   <div class="firma"><div>${esc(S.az)}</div><div>Per accettazione, il cliente</div></div>`;
+  setTimeout(()=>window.print(),150);
+}
+
+/* ---------------- salvataggio / archivio ---------------- */
+let asT=null;function autosave(){clearTimeout(asT);asT=setTimeout(()=>store("bru_pers_bozza",Q),400)}
+async function saveQuote(silent){
+  if(!Q.num)Q.num=nextNum();
+  const r=calcQuote(Q),rec={...structuredClone(Q),totale:r.tot,pezzi:r.pezzi,agg:Date.now()};
+  const i=ARCH.findIndex(a=>a.id===Q.id);if(i>=0)ARCH[i]=rec;else ARCH.unshift(rec);
+  store("bru_pers_archivio",ARCH);store("bru_pers_bozza",Q);
+  if(db){try{await withTimeout(db.collection("preventivi_persiane").doc(Q.id).set(rec),6000)}catch(e){}}
+  bindCliente();renderArch();if(!silent)toast("Preventivo salvato");
+}
+function renderArch(){
+  const f=($("aCerca").value||"").toLowerCase();
+  const L=ARCH.filter(a=>!f||(a.cliente.nome+" "+a.cliente.rif+" "+a.num).toLowerCase().includes(f));
+  $("aBody").innerHTML=L.length?L.map(a=>`<tr><td>${a.num||"—"}</td><td>${a.cliente.data?new Date(a.cliente.data).toLocaleDateString("it-IT"):""}</td><td>${esc(a.cliente.nome)}</td><td>${esc(a.cliente.rif)}</td><td>${a.pezzi||0}</td><td style="text-align:right">${eur(a.totale)}</td>
+   <td style="text-align:right;white-space:nowrap"><button class="btn sm" onclick="apri('${a.id}')">Apri</button> <button class="btn sm" onclick="copia('${a.id}')">Copia</button> <button class="btn sm del" onclick="elimina('${a.id}')">Elimina</button></td></tr>`).join(""):`<tr><td colspan="7" class="muted">Nessun preventivo salvato.</td></tr>`;
+}
+function apri(id){const a=ARCH.find(x=>x.id===id);if(!a)return;Q=structuredClone(a);delete Q.totale;delete Q.pezzi;delete Q.agg;bindCliente();renderVoci();show("prev")}
+function copia(id){apri(id);Q.id=uid();Q.num="";Q.cliente.data=new Date().toISOString().slice(0,10);bindCliente();toast("Copia creata: salvala per archiviarla")}
+async function elimina(id){if(!confirm("Eliminare definitivamente questo preventivo?"))return;ARCH=ARCH.filter(a=>a.id!==id);store("bru_pers_archivio",ARCH);
+  if(db){try{await withTimeout(db.collection("preventivi_persiane").doc(id).delete(),6000)}catch(e){}}renderArch()}
+
+/* ---------------- importazione offerte Starpur ---------------- */
+if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"}
+async function pdfToText(file){
+  const buf=await file.arrayBuffer();const pdf=await pdfjsLib.getDocument({data:buf}).promise;let out=[];
+  for(let p=1;p<=pdf.numPages;p++){
+    const page=await pdf.getPage(p);const tc=await page.getTextContent();const lines=[];
+    tc.items.forEach(it=>{if(!it.str)return;const y=it.transform[5],x=it.transform[4];let L=lines.find(l=>Math.abs(l.y-y)<2.5);if(!L){L={y,items:[]};lines.push(L)}L.items.push({x,w:it.width,s:it.str})});
+    lines.sort((a,b)=>b.y-a.y);
+    lines.forEach(L=>{L.items.sort((a,b)=>a.x-b.x);let s="",end=null;L.items.forEach(it=>{if(end!==null){const gap=it.x-end;s+=gap>12?"    ":gap>1.5?" ":""}s+=it.s;end=it.x+it.w});out.push(s)});
+    out.push("\f");
+  }
+  return out.join("\n").normalize("NFKC");
+}
+const num=x=>parseFloat(String(x).replace(/\s/g,"").replace(/\./g,"").replace(",","."));
+const TMAP={"finestra 1 anta":"F1","finestra 2 ante":"F2","balcone 1 anta":"B1","balcone 2 ante":"B2","scorrevole finestra 1 anta":"SF","scorrevole balcone 1 anta":"SB"};
+function parseStarpur(t,fname){
+  t=t.split(/Art\.\s*1\s*-\s*Formazione/)[0];
+  const data=(t.match(/(\d\d\/\d\d\/\d\d)/)||[])[1]||"";
+  const fm=fname.match(/RIF[_ ]+(.+?)(?:_+\d?_*)?\.pdf$/i);
+  const rif=(fm?fm[1]:fname.replace(/\.pdf$/i,"")).replace(/_+/g," ").trim();
+  const lines=t.split("\n"),rows=[];let cur=null;
+  const tipoRe=/((?:Scorrevole )?(?:Finestra|Balcone) \d an[nt][ae])\b/;
+  lines.forEach((l,i)=>{
+    const m=l.match(tipoRe);
+    if(m&&!/Pz\. totali/.test(l)){cur={tipo:TMAP[m[1].toLowerCase()],col:""};rows.push(cur)}
+    if(!cur)return;
+    const p=l.match(/^\s*(\d\d)\s.*?\s(\d+)\s+([\d.]+,\d\d)\s+(?:([\d.]+,\d\d)\s+)?(\d+%\s*\+\s*\d+%)\s+([\d.]+,\d\d)\s*$/);
+    if(p&&cur.listino===undefined){cur.pos=p[1];cur.q=+p[2];cur.listino=num(p[3]);cur.sconto=p[5].replace(/\s/g,"")}
+    const ce=l.match(/Col\. Est\.:\s*(.*)$/);
+    if(ce&&!cur.colDone){let parts=[ce[1].split(/\s{3,}/)[0]];for(let j=i+1;j<lines.length&&j<i+6&&!/Col\. Acc/.test(lines[j]);j++){lines[j].trim().split(/\s{3,}/).forEach(x=>{if(x&&!/^\d/.test(x)&&!/%|€|,\d\d/.test(x))parts.push(x)})}
+      cur.col=parts.join(" ").replace(/Verniciato|Speciale|Particolare/g,"").replace(/\s+/g," ").trim();cur.colDone=true}
+    if(/MYSHADOW/.test(l)&&!cur.mod){
+      let mod=(l.split("MYSHADOW")[1]||"").split(/\s{3,}/)[0].trim();let j=i+1,dim=null;
+      while(j<lines.length&&j<i+6){const d=lines[j].match(/(\d[\d.]*)\s*x\s*(\d[\d.]*)/);if(d){dim=d;break}const s=lines[j].trim().split(/\s{3,}/)[0];if(s&&!/\d/.test(s)&&s.length<25&&/^[A-Z ]+$/.test(s))mod+=" "+s;j++}
+      const md=mod.toUpperCase();cur.mod=md.includes("SCORREVOLE")?"Scorrevole":md.includes("STORICA")?"Fiorentina storica":md.includes("TELAIO")?"Fiorentina con telaio":md.includes("RUSTICA")?"Rustica":"Classica";
+      if(dim){cur.W=+dim[1].replace(/\./g,"");cur.H=+dim[2].replace(/\./g,"")}
+    }
+  });
+  return {rif,data,rows:rows.filter(r=>r.tipo&&r.listino&&r.W).map(r=>({sel:true,pos:r.pos,r:[rif,data,r.tipo,r.mod,r.W,r.H,r.listino,r.sconto,r.col||""]}))};
+}
+const keyRow=r=>[r[0],r[2],r[3],r[4],r[5],r[6]].join("|");
+async function importaFiles(files){
+  if(!window.pdfjsLib){toast("Lettore PDF non caricato: serve la connessione internet");return}
+  $("ovImp").classList.add("on");document.body.style.overflow="hidden";
+  $("impBody").innerHTML=`<p class="muted">Lettura di ${files.length} file in corso…</p>`;
+  pending=[];const report=[],esist=new Set(allStorico().map(keyRow));
+  for(const f of files){try{const r=parseStarpur(await pdfToText(f),f.name);r.rows.forEach(x=>{x.dup=esist.has(keyRow(x.r));if(x.dup)x.sel=false});pending.push(...r.rows);report.push({f:f.name,...r})}catch(e){report.push({f:f.name,err:e.message})}}
+  const nuovi=pending.filter(p=>!p.dup).length;
+  $("impBody").innerHTML=report.map(r=>r.err?`<div class="alert" style="border-color:var(--warn)">${esc(r.f)}: file non leggibile (${esc(r.err)})</div>`:`<div class="small" style="margin:6px 0"><b>${esc(r.f)}</b> – rif. ${esc(r.rif)} del ${esc(r.data)} · ${r.rows.length} persiane lette</div>`).join("")+
+   (pending.length?`<div class="list" style="overflow-x:auto;margin-top:10px"><table><thead><tr><th></th><th>Rif.</th><th>Pos.</th><th>Tipologia</th><th>Modello</th><th>Misure</th><th style="text-align:right">Listino</th><th>Sconto</th><th style="text-align:right">Formula attuale</th></tr></thead><tbody>${pending.map((p,i)=>{const r=p.r,est=listinoBase({W:r[4],H:r[5],tipo:r[2],mod:r[3]}),d=est?(r[6]-est)/est*100:0;
+     return `<tr><td><input type="checkbox" data-p="${i}" ${p.sel?"checked":""} ${p.dup?"disabled":""} style="width:18px;height:18px;accent-color:var(--y)"></td><td>${esc(r[0])}</td><td>${esc(p.pos)}</td><td>${TIPI[r[2]]}</td><td>${esc(r[3])}</td><td>${r[4]}×${r[5]}</td><td style="text-align:right">${eur(r[6])}</td><td>${esc(r[7])}</td><td style="text-align:right" class="small">${eur(est)} <span style="color:${Math.abs(d)>10?'var(--warn)':'var(--mut)'}">${d>=0?"+":""}${d.toFixed(0)}%</span>${p.dup?"<br><span class='muted'>già presente</span>":""}</td></tr>`}).join("")}</tbody></table></div>`:`<p class="muted">Nessuna persiana riconosciuta nei file selezionati.</p>`)+
+   `<div class="row" style="margin-top:14px"><button class="btn y" id="impOk" ${nuovi?"":"disabled"}>Aggiungi allo storico e aggiorna il listino</button><button class="btn" onclick="chiudiImp()">Annulla</button></div>`;
+  $("impBody").querySelectorAll("input[data-p]").forEach(c=>c.onchange=()=>pending[+c.dataset.p].sel=c.checked);
+  if($("impOk"))$("impOk").onclick=confermaImport;
+}
+function chiudiImp(){$("ovImp").classList.remove("on");document.body.style.overflow="";pending=[]}
+async function confermaImport(){
+  const sel=pending.filter(p=>p.sel&&!p.dup).map(p=>p.r);if(!sel.length){toast("Seleziona almeno una persiana");return}
+  STORICO_EXTRA.push(...sel);store("bru_pers_storico_extra",STORICO_EXTRA);
+  IMPORTI.unshift({quando:new Date().toISOString(),rif:[...new Set(sel.map(r=>r[0]))],n:sel.length});store("bru_pers_importi",IMPORTI);
+  if(db){try{await withTimeout(db.collection("config").doc("storico_starpur").set({righe:JSON.stringify(STORICO_EXTRA),importi:JSON.stringify(IMPORTI)}),8000)}catch(e){}}
+  const res=ricalibra();chiudiImp();renderVoci();if($("v-imp").classList.contains("on"))renderImp();
+  toast(`${sel.length} persiane aggiunte. Scarto tipico ${res.prima.toFixed(1).replace(".",",")}% → ${res.dopo.toFixed(1).replace(".",",")}%`);
+}
+
+/* ---------------- ricalibrazione listino ---------------- */
+function parseData(d){const m=(d||"").match(/(\d+)\/(\d+)\/(\d+)/);if(!m)return null;const y=+m[3]<100?2000+ +m[3]:+m[3];return new Date(y,+m[2]-1,+m[1])}
+function featRow(r){return [1,Math.log(r[4]*r[5]/1e6),n2(r[2]),bal(r[2])].concat(MODELLI.slice(1).map(m=>r[3]===m)).map(Number)}
+function solve(X,y,w){const n=X[0].length;const M=Array.from({length:n},()=>Array(n+1).fill(0));
+  X.forEach((x,i)=>{for(let a=0;a<n;a++){for(let b=0;b<n;b++)M[a][b]+=w[i]*x[a]*x[b];M[a][n]+=w[i]*x[a]*y[i]}});
+  for(let a=0;a<n;a++)M[a][a]+=1e-6;
+  for(let c=0;c<n;c++){let p=c;for(let r=c+1;r<n;r++)if(Math.abs(M[r][c])>Math.abs(M[p][c]))p=r;[M[c],M[p]]=[M[p],M[c]];for(let r=0;r<n;r++){if(r===c)continue;const f=M[r][c]/M[c][c];for(let k=c;k<=n;k++)M[r][k]-=f*M[c][k]}}
+  return M.map((r,i)=>r[n]/r[i])}
+function errMed(rows){const e=rows.map(r=>Math.abs(listinoBase({W:r[4],H:r[5],tipo:r[2],mod:r[3]})-r[6])/r[6]).sort((a,b)=>a-b);return e.length?e[Math.floor(e.length/2)]*100:0}
+function ricalibra(){
+  const base=allStorico().filter(r=>r[6]>0),prima=errMed(base),oggi=new Date();let rows=base,b;
+  for(let it=0;it<2;it++){const X=rows.map(featRow),y=rows.map(r=>Math.log(r[6])),w=rows.map(r=>{const d=parseData(r[1]);return d&&(oggi-d)/864e5<=180?2:1});b=solve(X,y,w);
+    if(it===0)rows=rows.filter(r=>{const p=Math.exp(featRow(r).reduce((s,v,i)=>s+v*b[i],0));return Math.abs(p-r[6])/r[6]<.3})}
+  const cnt=i=>rows.filter(r=>featRow(r)[i]).length;
+  S.base=+Math.exp(b[0]).toFixed(2);S.expA=+b[1].toFixed(4);if(cnt(2)>=2)S.ante2=+Math.exp(b[2]).toFixed(3);if(cnt(3)>=2)S.balcone=+Math.exp(b[3]).toFixed(3);
+  MODELLI.slice(1).forEach((m,j)=>{if(cnt(4+j)>=2)S.modelli[m]=+Math.exp(b[4+j]).toFixed(3)});
+  S.calib={quando:new Date().toISOString(),n:rows.length,errore:errMed(base)};store("bru_pers_settings",S);
+  if(db)withTimeout(db.collection("config").doc("persiane").set(S),6000).catch(()=>{});
+  return {prima,dopo:S.calib.errore};
+}
+function scaricaStorico(){
+  const h="rif;data;tipologia;modello;L;H;listino_eur;sconto;colore\n";
+  const csv=h+allStorico().map(r=>[r[0],r[1],TIPI[r[2]],r[3],r[4],r[5],String(r[6]).replace(".",","),r[7],r[8]].map(x=>typeof x==="number"?x:`"${x}"`).join(";")).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv"}));a.download="storico-listino-starpur.csv";a.click();
+}
+
+/* ---------------- impostazioni ---------------- */
+const FORM_F=[["base","Base (€)"],["expA","Esponente superficie"],["ante2","2 ante ×"],["balcone","Balcone ×"]].concat(MODELLI.map(m=>["M_"+m,m+" ×"]));
+const OPT_F=[["ralAltri","Altri RAL e Marmo (%)"],["meccRal","Meccanismo RAL (%)"],["lamelle","Lamelle orientabili (%)"],["fuoriSq","Fuori squadro (€/inclinazione)"],["bandella","Bandella a croce + cardine (€/pz)"],["paletto","Paletto incassato (€/pz)"],["cerniera","Cerniera centrale a croce (€/pz)"],["cremonese","Chiusura a cremonese (€/pz, da confermare)"],["fermaInt","Fermapersiana interno (€/pz, da confermare)"]];
+function renderImp(){
+  $("stInfo").innerHTML=`<b>${allStorico().length}</b> persiane nello storico (${STORICO.length} iniziali + ${STORICO_EXTRA.length} caricate da te).${S.calib?` Ultimo aggiornamento listino: ${new Date(S.calib.quando).toLocaleDateString("it-IT")}, scarto tipico ${S.calib.errore.toFixed(1).replace(".",",")}%.`:" Listino calcolato sulle 11 offerte iniziali, scarto tipico circa 3%."}`;
+  $("stLog").innerHTML=IMPORTI.slice(0,8).map(i=>`<div class="small muted">${new Date(i.quando).toLocaleDateString("it-IT")} – ${i.n} persiane da ${i.rif.join(", ")}</div>`).join("");
+  $("sS1").value=S.s1;$("sS2").value=S.s2;$("sAz").value=S.az;$("sAzDati").value=S.azDati;$("sNote").value=S.note;
+  $("sFormula").innerHTML=FORM_F.map(([k,l])=>`<label class="f">${l}<input type="number" step="0.001" data-k="${k}" value="${k.startsWith("M_")?S.modelli[k.slice(2)]:S[k]}"></label>`).join("");
+  $("sOpt").innerHTML=OPT_F.map(([k,l])=>`<label class="f">${l}<input type="number" step="0.01" data-o="${k}" value="${S.opt[k]}"></label>`).join("");
+  $("dRic").value=S.ric;$("dPosa").value=S.posa;$("dIva").value=S.iva;renderPartner();
+}
+async function saveImp(){
+  S.s1=+$("sS1").value;S.s2=+$("sS2").value;S.az=$("sAz").value;S.azDati=$("sAzDati").value;S.note=$("sNote").value;
+  $("sFormula").querySelectorAll("input").forEach(i=>{const k=i.dataset.k;if(k.startsWith("M_"))S.modelli[k.slice(2)]=+i.value;else S[k]=+i.value});
+  $("sOpt").querySelectorAll("input").forEach(i=>S.opt[i.dataset.o]=+i.value);
+  S.ric=+$("dRic").value;S.posa=+$("dPosa").value;S.iva=+$("dIva").value;
+  store("bru_pers_settings",S);if(db){try{await withTimeout(db.collection("config").doc("persiane").set(S),6000)}catch(e){}}
+  renderVoci();toast("Impostazioni salvate");
+}
+function renderPartner(){
+  $("hdrPartner").innerHTML=S.logoPartner?`<img src="${S.logoPartner}" alt="Starpur">`:`<span>Fornitore</span><b>STARPUR</b>`;
+  if($("logoPrev"))$("logoPrev").innerHTML=S.logoPartner?`<img src="${S.logoPartner}" alt="Logo" style="height:36px;background:#fff;padding:3px 6px;border-radius:4px">`:`<span class="muted">Nessun logo caricato</span>`;
+}
+function caricaLogo(file){const img=new Image(),r=new FileReader();r.onload=()=>{img.onload=()=>{const k=Math.min(1,400/img.width,120/img.height),c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);S.logoPartner=c.toDataURL("image/png");store("bru_pers_settings",S);if(db)withTimeout(db.collection("config").doc("persiane").set(S),6000).catch(()=>{});renderPartner();toast("Logo caricato")};img.src=r.result};r.readAsDataURL(file)}
+
+
+/* ================= LETTURA AUTOMATICA SCHEDE DI RILIEVO ================= */
+const RIL_LAYOUT={"W": 595.2755905511812, "H": 841.8897637795277, "pages": {"cover": {"fields": [{"n": "cli_nome", "t": "tx", "x": 57.9, "y": 93.5, "w": 298.1, "h": 12}, {"n": "cli_data", "t": "tx", "x": 418.01, "y": 93.5, "w": 147.27, "h": 12}, {"n": "cli_ind", "t": "tx", "x": 93.46, "y": 115.5, "w": 471.81, "h": 12}, {"n": "cli_cf", "t": "tx", "x": 109.92, "y": 137.5, "w": 246.08, "h": 12}, {"n": "cli_sdi", "t": "tx", "x": 433.58, "y": 137.5, "w": 131.7, "h": 12}, {"n": "cli_tel", "t": "tx", "x": 64.13, "y": 159.5, "w": 136.87, "h": 12}, {"n": "cli_mail", "t": "tx", "x": 243.0, "y": 159.5, "w": 173.0, "h": 12}, {"n": "cli_rif", "t": "tx", "x": 450.0, "y": 159.5, "w": 115.28, "h": 12}, {"n": "cli_ril", "t": "tx", "x": 73.02, "y": 181.5, "w": 202.98, "h": 12}, {"n": "cli_refc", "t": "tx", "x": 372.26, "y": 181.5, "w": 193.02, "h": 12}, {"n": "acc_piano", "t": "cb", "x": 28, "y": 238.0, "w": 9, "h": 9}, {"n": "acc_asc", "t": "cb", "x": 96.57, "y": 238.0, "w": 9, "h": 9}, {"n": "acc_ztl", "t": "cb", "x": 163.73, "y": 238.0, "w": 9, "h": 9}, {"n": "acc_pont", "t": "cb", "x": 227.57, "y": 238.0, "w": 9, "h": 9}, {"n": "acc_smalt", "t": "cb", "x": 342.46, "y": 238.0, "w": 9, "h": 9}, {"n": "acc_cond", "t": "cb", "x": 28, "y": 253.0, "w": 9, "h": 9}, {"n": "acc_note", "t": "tx", "x": 132.61, "y": 266.5, "w": 432.67, "h": 12}, {"n": "rie_1_1", "t": "tx", "x": 60, "y": 340.0, "w": 91, "h": 13}, {"n": "rie_1_2", "t": "tx", "x": 155, "y": 340.0, "w": 86, "h": 13}, {"n": "rie_1_3", "t": "tx", "x": 245, "y": 340.0, "w": 86, "h": 13}, {"n": "rie_1_4", "t": "tx", "x": 335, "y": 340.0, "w": 44, "h": 13}, {"n": "rie_1_5", "t": "tx", "x": 383, "y": 340.0, "w": 44, "h": 13}, {"n": "rie_1_6", "t": "tx", "x": 431, "y": 340.0, "w": 28, "h": 13}, {"n": "rie_1_7", "t": "tx", "x": 463, "y": 340.0, "w": 102.28, "h": 13}, {"n": "rie_2_1", "t": "tx", "x": 60, "y": 357.0, "w": 91, "h": 13}, {"n": "rie_2_2", "t": "tx", "x": 155, "y": 357.0, "w": 86, "h": 13}, {"n": "rie_2_3", "t": "tx", "x": 245, "y": 357.0, "w": 86, "h": 13}, {"n": "rie_2_4", "t": "tx", "x": 335, "y": 357.0, "w": 44, "h": 13}, {"n": "rie_2_5", "t": "tx", "x": 383, "y": 357.0, "w": 44, "h": 13}, {"n": "rie_2_6", "t": "tx", "x": 431, "y": 357.0, "w": 28, "h": 13}, {"n": "rie_2_7", "t": "tx", "x": 463, "y": 357.0, "w": 102.28, "h": 13}, {"n": "rie_3_1", "t": "tx", "x": 60, "y": 374.0, "w": 91, "h": 13}, {"n": "rie_3_2", "t": "tx", "x": 155, "y": 374.0, "w": 86, "h": 13}, {"n": "rie_3_3", "t": "tx", "x": 245, "y": 374.0, "w": 86, "h": 13}, {"n": "rie_3_4", "t": "tx", "x": 335, "y": 374.0, "w": 44, "h": 13}, {"n": "rie_3_5", "t": "tx", "x": 383, "y": 374.0, "w": 44, "h": 13}, {"n": "rie_3_6", "t": "tx", "x": 431, "y": 374.0, "w": 28, "h": 13}, {"n": "rie_3_7", "t": "tx", "x": 463, "y": 374.0, "w": 102.28, "h": 13}, {"n": "rie_4_1", "t": "tx", "x": 60, "y": 391.0, "w": 91, "h": 13}, {"n": "rie_4_2", "t": "tx", "x": 155, "y": 391.0, "w": 86, "h": 13}, {"n": "rie_4_3", "t": "tx", "x": 245, "y": 391.0, "w": 86, "h": 13}, {"n": "rie_4_4", "t": "tx", "x": 335, "y": 391.0, "w": 44, "h": 13}, {"n": "rie_4_5", "t": "tx", "x": 383, "y": 391.0, "w": 44, "h": 13}, {"n": "rie_4_6", "t": "tx", "x": 431, "y": 391.0, "w": 28, "h": 13}, {"n": "rie_4_7", "t": "tx", "x": 463, "y": 391.0, "w": 102.28, "h": 13}, {"n": "rie_5_1", "t": "tx", "x": 60, "y": 408.0, "w": 91, "h": 13}, {"n": "rie_5_2", "t": "tx", "x": 155, "y": 408.0, "w": 86, "h": 13}, {"n": "rie_5_3", "t": "tx", "x": 245, "y": 408.0, "w": 86, "h": 13}, {"n": "rie_5_4", "t": "tx", "x": 335, "y": 408.0, "w": 44, "h": 13}, {"n": "rie_5_5", "t": "tx", "x": 383, "y": 408.0, "w": 44, "h": 13}, {"n": "rie_5_6", "t": "tx", "x": 431, "y": 408.0, "w": 28, "h": 13}, {"n": "rie_5_7", "t": "tx", "x": 463, "y": 408.0, "w": 102.28, "h": 13}, {"n": "rie_6_1", "t": "tx", "x": 60, "y": 425.0, "w": 91, "h": 13}, {"n": "rie_6_2", "t": "tx", "x": 155, "y": 425.0, "w": 86, "h": 13}, {"n": "rie_6_3", "t": "tx", "x": 245, "y": 425.0, "w": 86, "h": 13}, {"n": "rie_6_4", "t": "tx", "x": 335, "y": 425.0, "w": 44, "h": 13}, {"n": "rie_6_5", "t": "tx", "x": 383, "y": 425.0, "w": 44, "h": 13}, {"n": "rie_6_6", "t": "tx", "x": 431, "y": 425.0, "w": 28, "h": 13}, {"n": "rie_6_7", "t": "tx", "x": 463, "y": 425.0, "w": 102.28, "h": 13}, {"n": "rie_7_1", "t": "tx", "x": 60, "y": 442.0, "w": 91, "h": 13}, {"n": "rie_7_2", "t": "tx", "x": 155, "y": 442.0, "w": 86, "h": 13}, {"n": "rie_7_3", "t": "tx", "x": 245, "y": 442.0, "w": 86, "h": 13}, {"n": "rie_7_4", "t": "tx", "x": 335, "y": 442.0, "w": 44, "h": 13}, {"n": "rie_7_5", "t": "tx", "x": 383, "y": 442.0, "w": 44, "h": 13}, {"n": "rie_7_6", "t": "tx", "x": 431, "y": 442.0, "w": 28, "h": 13}, {"n": "rie_7_7", "t": "tx", "x": 463, "y": 442.0, "w": 102.28, "h": 13}, {"n": "rie_8_1", "t": "tx", "x": 60, "y": 459.0, "w": 91, "h": 13}, {"n": "rie_8_2", "t": "tx", "x": 155, "y": 459.0, "w": 86, "h": 13}, {"n": "rie_8_3", "t": "tx", "x": 245, "y": 459.0, "w": 86, "h": 13}, {"n": "rie_8_4", "t": "tx", "x": 335, "y": 459.0, "w": 44, "h": 13}, {"n": "rie_8_5", "t": "tx", "x": 383, "y": 459.0, "w": 44, "h": 13}, {"n": "rie_8_6", "t": "tx", "x": 431, "y": 459.0, "w": 28, "h": 13}, {"n": "rie_8_7", "t": "tx", "x": 463, "y": 459.0, "w": 102.28, "h": 13}, {"n": "rie_9_1", "t": "tx", "x": 60, "y": 476.0, "w": 91, "h": 13}, {"n": "rie_9_2", "t": "tx", "x": 155, "y": 476.0, "w": 86, "h": 13}, {"n": "rie_9_3", "t": "tx", "x": 245, "y": 476.0, "w": 86, "h": 13}, {"n": "rie_9_4", "t": "tx", "x": 335, "y": 476.0, "w": 44, "h": 13}, {"n": "rie_9_5", "t": "tx", "x": 383, "y": 476.0, "w": 44, "h": 13}, {"n": "rie_9_6", "t": "tx", "x": 431, "y": 476.0, "w": 28, "h": 13}, {"n": "rie_9_7", "t": "tx", "x": 463, "y": 476.0, "w": 102.28, "h": 13}, {"n": "rie_10_1", "t": "tx", "x": 60, "y": 493.0, "w": 91, "h": 13}, {"n": "rie_10_2", "t": "tx", "x": 155, "y": 493.0, "w": 86, "h": 13}, {"n": "rie_10_3", "t": "tx", "x": 245, "y": 493.0, "w": 86, "h": 13}, {"n": "rie_10_4", "t": "tx", "x": 335, "y": 493.0, "w": 44, "h": 13}, {"n": "rie_10_5", "t": "tx", "x": 383, "y": 493.0, "w": 44, "h": 13}, {"n": "rie_10_6", "t": "tx", "x": 431, "y": 493.0, "w": 28, "h": 13}, {"n": "rie_10_7", "t": "tx", "x": 463, "y": 493.0, "w": 102.28, "h": 13}, {"n": "rie_11_1", "t": "tx", "x": 60, "y": 510.0, "w": 91, "h": 13}, {"n": "rie_11_2", "t": "tx", "x": 155, "y": 510.0, "w": 86, "h": 13}, {"n": "rie_11_3", "t": "tx", "x": 245, "y": 510.0, "w": 86, "h": 13}, {"n": "rie_11_4", "t": "tx", "x": 335, "y": 510.0, "w": 44, "h": 13}, {"n": "rie_11_5", "t": "tx", "x": 383, "y": 510.0, "w": 44, "h": 13}, {"n": "rie_11_6", "t": "tx", "x": 431, "y": 510.0, "w": 28, "h": 13}, {"n": "rie_11_7", "t": "tx", "x": 463, "y": 510.0, "w": 102.28, "h": 13}, {"n": "rie_12_1", "t": "tx", "x": 60, "y": 527.0, "w": 91, "h": 13}, {"n": "rie_12_2", "t": "tx", "x": 155, "y": 527.0, "w": 86, "h": 13}, {"n": "rie_12_3", "t": "tx", "x": 245, "y": 527.0, "w": 86, "h": 13}, {"n": "rie_12_4", "t": "tx", "x": 335, "y": 527.0, "w": 44, "h": 13}, {"n": "rie_12_5", "t": "tx", "x": 383, "y": 527.0, "w": 44, "h": 13}, {"n": "rie_12_6", "t": "tx", "x": 431, "y": 527.0, "w": 28, "h": 13}, {"n": "rie_12_7", "t": "tx", "x": 463, "y": 527.0, "w": 102.28, "h": 13}, {"n": "rie_13_1", "t": "tx", "x": 60, "y": 544.0, "w": 91, "h": 13}, {"n": "rie_13_2", "t": "tx", "x": 155, "y": 544.0, "w": 86, "h": 13}, {"n": "rie_13_3", "t": "tx", "x": 245, "y": 544.0, "w": 86, "h": 13}, {"n": "rie_13_4", "t": "tx", "x": 335, "y": 544.0, "w": 44, "h": 13}, {"n": "rie_13_5", "t": "tx", "x": 383, "y": 544.0, "w": 44, "h": 13}, {"n": "rie_13_6", "t": "tx", "x": 431, "y": 544.0, "w": 28, "h": 13}, {"n": "rie_13_7", "t": "tx", "x": 463, "y": 544.0, "w": 102.28, "h": 13}, {"n": "rie_14_1", "t": "tx", "x": 60, "y": 561.0, "w": 91, "h": 13}, {"n": "rie_14_2", "t": "tx", "x": 155, "y": 561.0, "w": 86, "h": 13}, {"n": "rie_14_3", "t": "tx", "x": 245, "y": 561.0, "w": 86, "h": 13}, {"n": "rie_14_4", "t": "tx", "x": 335, "y": 561.0, "w": 44, "h": 13}, {"n": "rie_14_5", "t": "tx", "x": 383, "y": 561.0, "w": 44, "h": 13}, {"n": "rie_14_6", "t": "tx", "x": 431, "y": 561.0, "w": 28, "h": 13}, {"n": "rie_14_7", "t": "tx", "x": 463, "y": 561.0, "w": 102.28, "h": 13}]}, "scheda": {"fields": [{"n": "cli", "t": "tx", "x": 93.02, "y": 65.5, "w": 232.98, "h": 12}, {"n": "amb", "t": "tx", "x": 378.79, "y": 65.5, "w": 109.21, "h": 12}, {"n": "q", "t": "tx", "x": 522.12, "y": 65.5, "w": 43.16, "h": 12}, {"n": "piano", "t": "tx", "x": 53.46, "y": 85.5, "w": 62.54, "h": 12}, {"n": "foto", "t": "tx", "x": 159.9, "y": 85.5, "w": 58.1, "h": 12}, {"n": "lato_strada", "t": "cb", "x": 260, "y": 92.0, "w": 9, "h": 9}, {"n": "lato_int", "t": "cb", "x": 356.44, "y": 92.0, "w": 9, "h": 9}, {"n": "tipo_F1", "t": "cb", "x": 34.0, "y": 175.0, "w": 9, "h": 9}, {"n": "tipo_F2", "t": "cb", "x": 123.88, "y": 175.0, "w": 9, "h": 9}, {"n": "tipo_B1", "t": "cb", "x": 213.76, "y": 175.0, "w": 9, "h": 9}, {"n": "tipo_B2", "t": "cb", "x": 303.64, "y": 175.0, "w": 9, "h": 9}, {"n": "tipo_SF", "t": "cb", "x": 393.52, "y": 175.0, "w": 9, "h": 9}, {"n": "tipo_SB", "t": "cb", "x": 483.4, "y": 175.0, "w": 9, "h": 9}, {"n": "mod_0", "t": "cb", "x": 108, "y": 192.0, "w": 9, "h": 9}, {"n": "mod_1", "t": "cb", "x": 167.11, "y": 192.0, "w": 9, "h": 9}, {"n": "mod_2", "t": "cb", "x": 270.65, "y": 192.0, "w": 9, "h": 9}, {"n": "mod_3", "t": "cb", "x": 362.83, "y": 192.0, "w": 9, "h": 9}, {"n": "mod_4", "t": "cb", "x": 418.17, "y": 192.0, "w": 9, "h": 9}, {"n": "L", "t": "tx", "x": 106.82, "y": 231.5, "w": 44.18, "h": 12}, {"n": "H", "t": "tx", "x": 228.7, "y": 231.5, "w": 55.3, "h": 12}, {"n": "LV", "t": "tx", "x": 76.58, "y": 250.5, "w": 74.42, "h": 12}, {"n": "HV", "t": "tx", "x": 210.91, "y": 250.5, "w": 73.09, "h": 12}, {"n": "D1", "t": "tx", "x": 75.69, "y": 269.5, "w": 75.31, "h": 12}, {"n": "D2", "t": "tx", "x": 208.69, "y": 269.5, "w": 75.31, "h": 12}, {"n": "MZ", "t": "tx", "x": 96.59, "y": 288.5, "w": 54.41, "h": 12}, {"n": "FS", "t": "tx", "x": 224.25, "y": 288.5, "w": 59.75, "h": 12}, {"n": "pos_luce", "t": "cb", "x": 72, "y": 314.0, "w": 9, "h": 9}, {"n": "pos_oltre", "t": "cb", "x": 124.04, "y": 314.0, "w": 9, "h": 9}, {"n": "arco", "t": "cb", "x": 28, "y": 331.0, "w": 9, "h": 9}, {"n": "fis_tel", "t": "cb", "x": 296, "y": 253.0, "w": 9, "h": 9}, {"n": "fis_muro", "t": "cb", "x": 391.02, "y": 253.0, "w": 9, "h": 9}, {"n": "fis_band", "t": "cb", "x": 296, "y": 268.0, "w": 9, "h": 9}, {"n": "fis_riuso", "t": "cb", "x": 296, "y": 283.0, "w": 9, "h": 9}, {"n": "car_sx", "t": "cb", "x": 372, "y": 302.0, "w": 9, "h": 9}, {"n": "car_dx", "t": "cb", "x": 427.34, "y": 302.0, "w": 9, "h": 9}, {"n": "scor_sx", "t": "cb", "x": 296, "y": 317.0, "w": 9, "h": 9}, {"n": "scor_dx", "t": "cb", "x": 365.98, "y": 317.0, "w": 9, "h": 9}, {"n": "impacc", "t": "cb", "x": 296, "y": 334.0, "w": 9, "h": 9}, {"n": "paletto", "t": "cb", "x": 296, "y": 349.0, "w": 9, "h": 9}, {"n": "lam", "t": "cb", "x": 437.81, "y": 349.0, "w": 9, "h": 9}, {"n": "ferma", "t": "cb", "x": 296, "y": 364.0, "w": 9, "h": 9}, {"n": "ferma_int", "t": "cb", "x": 408.97, "y": 364.0, "w": 9, "h": 9}, {"n": "spagn", "t": "cb", "x": 338, "y": 383.0, "w": 9, "h": 9}, {"n": "crem", "t": "cb", "x": 410.36, "y": 383.0, "w": 9, "h": 9}, {"n": "chh_std", "t": "cb", "x": 366, "y": 400.0, "w": 9, "h": 9}, {"n": "chh", "t": "tx", "x": 490.72, "y": 393.5, "w": 74.56, "h": 12}, {"n": "col_0", "t": "cb", "x": 74, "y": 444.0, "w": 9, "h": 9}, {"n": "col_1", "t": "cb", "x": 193.61, "y": 444.0, "w": 9, "h": 9}, {"n": "col_2", "t": "cb", "x": 305.18, "y": 444.0, "w": 9, "h": 9}, {"n": "col_3", "t": "cb", "x": 424.31, "y": 444.0, "w": 9, "h": 9}, {"n": "col_4", "t": "cb", "x": 74, "y": 459.0, "w": 9, "h": 9}, {"n": "col_5", "t": "cb", "x": 196.43, "y": 459.0, "w": 9, "h": 9}, {"n": "col_6", "t": "cb", "x": 295.24, "y": 459.0, "w": 9, "h": 9}, {"n": "col_altri", "t": "cb", "x": 74, "y": 474.0, "w": 9, "h": 9}, {"n": "col_altro", "t": "tx", "x": 229.3, "y": 467.5, "w": 335.97, "h": 12}, {"n": "acc_nero", "t": "cb", "x": 74, "y": 491.0, "w": 9, "h": 9}, {"n": "acc_ral", "t": "cb", "x": 160.52, "y": 491.0, "w": 9, "h": 9}, {"n": "note", "t": "tx", "x": 28, "y": 743.89, "w": 539.28, "h": 44}]}}, "markers": [[19.0, 78.0], [576.28, 78.0], [19.0, 813.89], [576.28, 813.89]], "bits": [[263.64, 806.89], [283.64, 806.89], [303.64, 806.89], [323.64, 806.89]]};
+let tessWorker=null, rilPending=null;
+const RIL_CB_THR=.06;
+function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector(`script[src="${src}"]`)&&window.Tesseract)return res();const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=()=>rej(new Error("impossibile caricare il lettore OCR (serve internet)"));document.head.appendChild(s)})}
+async function getTess(){if(tessWorker)return tessWorker;await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js");tessWorker=await Tesseract.createWorker("ita");return tessWorker}
+function rilMsg(t){$("rilBody").innerHTML=`<p class="muted">${t}</p>`}
+
+/* --- geometria: omografia da 4 punti --- */
+function homography(src,dst){const A=[],b=[];for(let i=0;i<4;i++){const [x,y]=src[i],[u,v]=dst[i];A.push([x,y,1,0,0,0,-u*x,-u*y]);b.push(u);A.push([0,0,0,x,y,1,-v*x,-v*y]);b.push(v)}
+  for(let c=0;c<8;c++){let p=c;for(let r=c+1;r<8;r++)if(Math.abs(A[r][c])>Math.abs(A[p][c]))p=r;[A[c],A[p]]=[A[p],A[c]];[b[c],b[p]]=[b[p],b[c]];for(let r=0;r<8;r++){if(r===c)continue;const f=A[r][c]/A[c][c];for(let k=c;k<8;k++)A[r][k]-=f*A[c][k];b[r]-=f*b[c]}}
+  const h=b.map((v,i)=>v/A[i][i]);return (x,y)=>{const d=h[6]*x+h[7]*y+1;return [(h[0]*x+h[1]*y+h[2])/d,(h[3]*x+h[4]*y+h[5])/d]}}
+function toGray(ctx,w,h){const d=ctx.getImageData(0,0,w,h).data,g=new Uint8Array(w*h);for(let i=0;i<w*h;i++)g[i]=(d[i*4]*299+d[i*4+1]*587+d[i*4+2]*114)/1000;return g}
+function otsu(g){const hist=new Array(256).fill(0);g.forEach(v=>hist[v]++);const tot=g.length;let sum=0;for(let i=0;i<256;i++)sum+=i*hist[i];let sB=0,wB=0,best=0,thr=128;
+  for(let t=0;t<256;t++){wB+=hist[t];if(!wB)continue;const wF=tot-wB;if(!wF)break;sB+=t*hist[t];const mB=sB/wB,mF=(sum-sB)/wF,v=wB*wF*(mB-mF)*(mB-mF);if(v>best){best=v;thr=t}}return thr}
+
+/* --- lettura ottica di una pagina (foto o scansione) --- */
+function omrPage(canvas){
+  // 1) immagine di lavoro (lato lungo max 1800 px) in scala di grigi
+  const sc=Math.min(1,1800/Math.max(canvas.width,canvas.height)),w=Math.round(canvas.width*sc),h=Math.round(canvas.height*sc);
+  const wc=document.createElement("canvas");wc.width=w;wc.height=h;const wctx=wc.getContext("2d");wctx.drawImage(canvas,0,0,w,h);
+  const G=toGray(wctx,w,h);
+  // 2) soglia adattiva (ombre, carta grigia, luce non uniforme)
+  const I=new Float64Array((w+1)*(h+1));
+  for(let y=0;y<h;y++){let r=0;for(let x=0;x<w;x++){r+=G[y*w+x];I[(y+1)*(w+1)+x+1]=I[y*(w+1)+x+1]+r}}
+  const R=Math.max(8,Math.round(Math.max(w,h)/45)),B=new Uint8Array(w*h);
+  for(let y=0;y<h;y++){const y0=Math.max(0,y-R),y1=Math.min(h,y+R+1);for(let x=0;x<w;x++){const x0=Math.max(0,x-R),x1=Math.min(w,x+R+1);
+    const m=(I[y1*(w+1)+x1]-I[y0*(w+1)+x1]-I[y1*(w+1)+x0]+I[y0*(w+1)+x0])/((x1-x0)*(y1-y0));B[y*w+x]=(G[y*w+x]<m*.78&&G[y*w+x]<200)?1:0}}
+  const J=new Int32Array((w+1)*(h+1));
+  for(let y=0;y<h;y++){let r=0;for(let x=0;x<w;x++){r+=B[y*w+x];J[(y+1)*(w+1)+x+1]=J[y*(w+1)+x+1]+r}}
+  const box=(x0,y0,x1,y1)=>{x0=Math.max(0,Math.round(x0));y0=Math.max(0,Math.round(y0));x1=Math.min(w,Math.round(x1));y1=Math.min(h,Math.round(y1));if(x1<=x0||y1<=y0)return 0;return J[y1*(w+1)+x1]-J[y0*(w+1)+x1]-J[y1*(w+1)+x0]+J[y0*(w+1)+x0]};
+  // 3) candidati: quadrati pieni isolati
+  const seen=new Uint8Array(w*h);let cand=[];
+  for(let i=0;i<w*h;i++){if(seen[i]||!B[i])continue;const st=[i];seen[i]=1;let n=0,x0=1e9,y0=1e9,x1=-1,y1=-1;
+    while(st.length){const j=st.pop(),x=j%w,y=(j/w)|0;n++;if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;
+      if(n>6000)continue;
+      for(const k of [j-1,j+1,j-w,j+w]){if(k<0||k>=w*h||seen[k]||!B[k])continue;if((k===j-1&&x===0)||(k===j+1&&x===w-1))continue;seen[k]=1;st.push(k)}}
+    const bw=x1-x0+1,bh=y1-y0+1;if(bw>=7&&bh>=7&&bw<=80&&bh<=80&&bw/bh>.6&&bw/bh<1.6&&n/(bw*bh)>.7)cand.push({x:(x0+x1)/2,y:(y0+y1)/2,s:(bw+bh)/2})}
+  if(cand.length<3)return {err:"non trovo i quadratini neri agli angoli della scheda"};
+  // i 4 marcatori hanno tutti la stessa dimensione: tieni il gruppo di quadrati simili più numeroso (a parità, il più grande)
+  cand.sort((a,b)=>b.s-a.s);
+  for(const c of cand){const g=cand.filter(o=>Math.abs(o.s-c.s)<=.22*c.s);if(g.length>=3){cand=g;break}}
+  cand=cand.slice(0,12);
+  const pick=f=>cand.reduce((a,b)=>f(b)>f(a)?b:a);
+  let P=[pick(p=>-(p.x+p.y)),pick(p=>p.x-p.y),pick(p=>p.y-p.x),pick(p=>p.x+p.y)].map(p=>({x:p.x,y:p.y,s:p.s}));
+  // 4) verifica geometrica e ricostruzione dell'angolo mancante
+  const M=RIL_LAYOUT.markers,tW=M[1][0]-M[0][0],tH=M[2][1]-M[0][1];
+  const d=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+  const okP=()=>{const wT=d(P[0],P[1]),wB=d(P[2],P[3]),hL=d(P[0],P[2]),hR=d(P[1],P[3]);const r=((hL+hR)/2)/((wT+wB)/2);return new Set(P.map(p=>p.x+","+p.y)).size===4&&Math.abs(r/(tH/tW)-1)<.15&&Math.abs(wT/wB-1)<.2&&Math.abs(hL/hR-1)<.2};
+  if(!okP()){ // prova a ricostruire ciascun angolo dagli altri tre (parallelogramma)
+    let fixed=false;
+    for(let k=0;k<4&&!fixed;k++){const Q=P.slice(),o=[[1,2,3],[0,3,2],[0,3,1],[1,2,0]][k];Q[k]={x:Q[o[0]].x+Q[o[1]].x-Q[o[2]].x,y:Q[o[0]].y+Q[o[1]].y-Q[o[2]].y,s:Q[o[0]].s};const bak=P;P=Q;if(okP())fixed=true;else P=bak}
+    if(!fixed)return {err:"angoli della scheda non riconosciuti: inquadra tutta la pagina"};
+  }
+  // 5) rifinitura: cerca intorno a ogni angolo il quadrato più pieno con bordo chiaro attorno
+  const pxPt=((d(P[0],P[1])+d(P[2],P[3]))/2)/tW,mk=12*pxPt,rad=Math.round(10*pxPt);
+  P=P.map(p=>{let best=p,bs=-1e9;for(let dy=-rad;dy<=rad;dy+=1)for(let dx=-rad;dx<=rad;dx+=1){const cx=p.x+dx,cy=p.y+dy,a=mk/2,in_=box(cx-a,cy-a,cx+a,cy+a)/(mk*mk),ring=(box(cx-a-3*pxPt,cy-a-3*pxPt,cx+a+3*pxPt,cy+a+3*pxPt)-box(cx-a,cy-a,cx+a,cy+a))/(((mk+6*pxPt)**2)-mk*mk);const sc_=in_-1.5*ring;if(sc_>bs){bs=sc_;best={x:cx,y:cy}}}return best});
+  const T=homography(M,P.map(p=>[p.x,p.y]));
+  const at=(x,y)=>{const [u,v]=T(x,y),ui=Math.round(u),vi=Math.round(v);return (ui<0||vi<0||ui>=w||vi>=h)?0:B[vi*w+ui]};
+  const dens=(x,y,ww,hh,inset,NX=7,NY=7)=>{let s=0,n=0;for(let a=0;a<NX;a++)for(let b=0;b<NY;b++){s+=at(x+ww*(inset+(1-2*inset)*(a+.5)/NX),y+hh*(inset+(1-2*inset)*(b+.5)/NY));n++}return s/n};
+  // casella: trova il bordo stampato (spostamento fino a ±4 pt) e misura l'interno
+  const casella=(x,y,s)=>{let best={dx:0,dy:0},bs=-1;for(let dy=-4;dy<=4;dy+=.5)for(let dx=-4;dx<=4;dx+=.5){let r=0,n=0;for(let t=0;t<=1.0001;t+=1/8){r+=at(x+dx+s*t,y+dy)+at(x+dx+s*t,y+dy+s)+at(x+dx,y+dy+s*t)+at(x+dx+s,y+dy+s*t);n+=4}const sc_=r/n;if(sc_>bs){bs=sc_;best={dx,dy}}}
+    return dens(x+best.dx,y+best.dy,s,s,.27,6,6)};
+  let code=0;RIL_LAYOUT.bits.forEach(([cx,cy],i)=>{if(casella(cx-4,cy-4,8)>.45)code|=1<<i});
+  const kind=code===0?"cover":"scheda",fields=(RIL_LAYOUT.pages[kind]||{fields:[]}).fields;
+  const vals={_r:{}},crops={};
+  fields.forEach(f=>{
+    if(f.t==="cb"){const r=casella(f.x,f.y,f.w);vals._r[f.n]=r;vals[f.n]=r>RIL_CB_THR;return}
+    const ink=dens(f.x,f.y-1,f.w,f.h+1,.02,Math.max(8,Math.round(f.w/1.5)),Math.max(6,Math.round(f.h/1.2)));if(ink<.01){vals[f.n]="";return}
+    // ritaglio raddrizzato (anche un po' sopra la riga: la scrittura a mano esce dal campo)
+    const K=4,y0=f.y-6,hh=f.h+7,ow=Math.round(f.w*K),oh=Math.round(hh*K),cc=document.createElement("canvas");cc.width=ow;cc.height=oh;const c2=cc.getContext("2d"),out=c2.createImageData(ow,oh);
+    for(let yy=0;yy<oh;yy++)for(let xx=0;xx<ow;xx++){const [u,v]=T(f.x+xx/K,y0+yy/K),o=(yy*ow+xx)*4,ui=Math.round(u),vi=Math.round(v);const gv=(ui>=0&&vi>=0&&ui<w&&vi<h)?G[vi*w+ui]:255;out.data[o]=out.data[o+1]=out.data[o+2]=gv;out.data[o+3]=255}
+    c2.putImageData(out,0,0);crops[f.n]=cc;vals[f.n]="";
+  });
+  return {kind,code,vals,crops};
+}
+const RIL_AI_URL="/.netlify/functions/leggi-rilievo"; // lettura scrittura a mano con IA (Netlify Function, vedi cartella netlify/)
+const RIL_LABEL={amb:"ambiente / stanza",q:"quantità (numero di pezzi)",L:"larghezza in mm",H:"altezza in mm",LM:"luce muro larghezza mm",HM:"luce muro altezza mm",LV:"luce vano larghezza mm",HV:"luce vano altezza mm",D1:"diagonale mm",D2:"diagonale mm",
+  soph:"altezza sopraluce mm",man_h:"altezza maniglia mm",rif_mm:"rifilo in mm",MZ:"mazzetta mm",FS:"numero inclinazioni",chh:"altezza chiusura mm",note:"note",piano:"piano",
+  cli_nome:"nome cliente",cli_cf:"codice fiscale o partita IVA (lettere maiuscole e cifre)",cli_ind:"indirizzo",cli_tel:"telefono",cli_mail:"email",cli_rif:"riferimento",cli_data:"data"};
+const rilIsNum=n=>RIL_NUM.has(n)||(/^rie_\d+_(\d+)$/.test(n)&&RIL_NUMCOL.includes(+n.split("_")[2]));
+const rilIsOcr=n=>RIL_OCR.has(n)||/^rie_\d+_\d+$/.test(n);
+const rilLabel=n=>{const m=n.match(/^rie_(\d+)_(\d+)$/);return m?`riepilogo riga ${m[1]}: ${RIL_ROWCOLS[+m[2]]||""}`:(RIL_LABEL[n]||RIL_LABEL[n.replace(/^(est|int|col)_/,"")]||n.replace(/_/g," "))};
+async function ocrCrops(res,onProg){
+  const names=Object.keys(res.crops).filter(rilIsOcr);if(!names.length)return;
+  res.ocr=res.ocr||{};
+  // 1) lettura con IA (molto più affidabile sulla scrittura a mano)
+  try{
+    onProg&&onProg(0,names.length,"IA");
+    const campi=names.map(n=>({n,etichetta:rilLabel(n),numero:rilIsNum(n),img:res.crops[n].toDataURL("image/png").split(",")[1]}));
+    const r=await withTimeout(fetch(RIL_AI_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({campi})}),60000);
+    if(r.ok){const out=await r.json();if(out&&!out.error){names.forEach(n=>{let t=String(out[n]??"").trim();if(rilIsNum(n))t=t.replace(/\D/g,"");res.vals[n]=t;res.ocr[n]=90});res.via="IA";return}}
+  }catch(e){}
+  // 2) riserva: Tesseract nel browser (buono sullo stampatello, debole sul corsivo)
+  try{
+    const wk=await getTess();let i=0;
+    for(const n of names){onProg&&onProg(++i,names.length);const num=rilIsNum(n);
+      await wk.setParameters({tessedit_char_whitelist:num?"0123456789":"",tessedit_pageseg_mode:/note$/.test(n)?"6":"7"});
+      const {data}=await wk.recognize(res.crops[n]);let t=(data.text||"").replace(/\n/g," ").trim();if(num)t=t.replace(/\D/g,"");
+      res.vals[n]=t;res.ocr[n]=data.confidence}
+    res.via="OCR";
+  }catch(e){res.ocrErr=e.message;names.forEach(n=>res.ocr[n]=0)}
+}
+const RIL_NUMCOL=[4,5,6],RIL_ROWCOLS=["","ambiente","tipologia","modello","larghezza mm","altezza mm","quantità","colore"];
+
+function RIL_ROW(v,r){const g=c=>String(v[`rie_${r}_${c}`]||"").trim();const W=intv(g(4)),H=intv(g(5));if(!W&&!H&&!g(1))return null;
+  const t=g(2).toUpperCase(),mo=g(3).toUpperCase(),co=g(7).toUpperCase();
+  const tipo=/SC/.test(t)?(H>=2040||/B/.test(t)?"SB":"SF"):((/B/.test(t)||H>=2040)?"B":"F")+(/1/.test(t)?"1":"2");
+  const mod=/SCOR/.test(mo)||tipo.startsWith("S")?"Scorrevole":/STOR/.test(mo)?"Fiorentina storica":/TEL|FIOR/.test(mo)?"Fiorentina con telaio":/RUST/.test(mo)?"Rustica":/CLAS/.test(mo)?"Classica":"Fiorentina con telaio";
+  const codes=[["6005",0],["9010",1],["7001",2],["701",3],["817",4],["8017",5],["7016",6],["7032",7]];const hit=codes.find(([k])=>co.replace(/\s/g,"").includes(k));
+  const colN=hit?COLORI[hit[1]].n:(co?COLORI.find(c=>c.altro).n:COLORI[0].n);
+  return {nome:g(1),tipo,mod,W,H,q:intv(g(6))||1,lato:"sx",col:colN,colAltro:hit?"":g(7),ralAltri:hit?!!COLORI[hit[1]].altri:!!co,acc:"nero",lam:false,fs:0,band:0,pal:0,cer:0,fpi:0,chius:"spag",chH:{mode:"std",h:""},note:"da riepilogo copertina"}}
+async function fileToCanvas(f){const url=URL.createObjectURL(f);const im=new Image();await new Promise((r,j)=>{im.onload=r;im.onerror=()=>j(new Error("immagine non leggibile"));im.src=url});
+  const k=Math.min(1,2600/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);return c}
+
+async function leggiSchede(files){
+  $("ovRil").classList.add("on");document.body.style.overflow="hidden";
+  const pagine=[];let log=[];
+  for(const f of files){
+    try{
+      if(/\.pdf$/i.test(f.name)||f.type==="application/pdf"){
+        if(!window.pdfjsLib)throw new Error("lettore PDF non caricato (serve internet)");
+        const doc=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+        for(let p=1;p<=doc.numPages;p++){
+          rilMsg(`Lettura ${esc(f.name)}, pagina ${p} di ${doc.numPages}…`);
+          const page=await doc.getPage(p),ann=(await page.getAnnotations()).filter(a=>a.fieldName);
+          if(ann.length){ // PDF compilato sul tablet: lettura esatta dei campi
+            const vals={};let n=0;ann.forEach(a=>{const m=a.fieldName.match(/^p(\d+)_(.*)$/);if(m)n=+m[1];const k=m?m[2]:a.fieldName;vals[k]=a.checkBox?(!!a.fieldValue&&a.fieldValue!=="Off"):(a.fieldValue||"")});
+            const kind=n?"scheda":"cover";if(kind==="cover"||Object.entries(vals).some(([k,v])=>v&&k!=="cli"))pagine.push({kind,code:n,vals,src:"modulo",file:f.name});
+          }else{ // scansione
+            const vp=page.getViewport({scale:2.2}),cv=document.createElement("canvas");cv.width=vp.width;cv.height=vp.height;await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+            const r=omrPage(cv);if(r.err){log.push(`${f.name} p.${p}: ${r.err}`);continue}
+            rilMsg(`Riconoscimento scrittura ${esc(f.name)}, pagina ${p}…`);await ocrCrops(r,(i,t,m)=>rilMsg(m?`Lettura della scrittura con IA, ${esc(f.name)} p.${p}…`:`Riconoscimento scrittura ${esc(f.name)} p.${p}: campo ${i} di ${t}…`));
+            pagine.push({...r,src:"scansione",file:f.name});
+          }
+        }
+      }else{
+        rilMsg(`Lettura foto ${esc(f.name)}…`);const cv=await fileToCanvas(f),r=omrPage(cv);
+        if(r.err){log.push(`${f.name}: ${r.err}`);continue}
+        await ocrCrops(r,(i,t,m)=>rilMsg(m?`Lettura della scrittura con IA, ${esc(f.name)}…`:`Riconoscimento scrittura ${esc(f.name)}: campo ${i} di ${t}…`));
+        pagine.push({...r,src:"foto",file:f.name});
+      }
+    }catch(e){log.push(`${f.name}: ${e.message}`)}
+  }
+  const cover=pagine.find(p=>p.kind==="cover");
+  const schede=pagine.filter(p=>p.kind==="scheda").sort((a,b)=>a.code-b.code);
+  if(pagine.some(p=>p.ocrErr))log.push("Riconoscimento della scrittura non disponibile ("+pagine.find(p=>p.ocrErr).ocrErr+"): caselle lette, misure da inserire a mano.");
+  const voci=schede.map(p=>({pos:p.code,src:p.src,ocr:p.ocr||{},v:RIL_MAP(p.vals)})).filter(x=>x.v);
+  if(cover)for(let r=1;r<=14;r++){const row=RIL_ROW(cover.vals,r);if(!row)continue;const ex=voci.find(x=>x.pos===r);
+    if(ex){if(!ex.v.W)ex.v.W=row.W;if(!ex.v.H)ex.v.H=row.H;if(!ex.v.nome)ex.v.nome=row.nome}else voci.push({pos:r,src:cover.src,ocr:Object.fromEntries(Object.keys(cover.ocr||{}).filter(k=>k.startsWith(`rie_${r}_`)).map(k=>[{1:"amb"}[k.split("_")[2]]||k,0])),v:row})}
+  voci.sort((a,b)=>a.pos-b.pos);
+  if(pagine.some(p=>p.via==="OCR"))log.push("Lettura IA non disponibile: usato l'OCR del browser, che sulla scrittura a mano sbaglia spesso. Controlla misure e nomi evidenziati.");
+  rilPending={cliente:cover?RIL_COVER(cover.vals):null,voci,log};
+  renderRil();
+}
+function renderRil(){
+  const P=rilPending,c=P.cliente;
+  const flag=(x,k)=>x.src!=="modulo"&&x.ocr&&(k in x.ocr)?" style=\"outline:2px solid var(--y)\"":"";
+  $("rilBody").innerHTML=`
+   ${P.log.length?`<div class="alert" style="border-color:var(--warn)">${P.log.map(esc).join("<br>")}<br><span class="small">Fotografa la scheda intera, dritta e ben illuminata: i 4 quadratini neri agli angoli devono essere visibili.</span></div>`:""}
+   ${c?`<h3>Cliente</h3><div class="grid g3">${[["nome","Cliente"],["cf","Codice fiscale / P.IVA"],["ind","Indirizzo cantiere"],["tel","Telefono"],["mail","Email"],["rif","Riferimento"]].map(([k,l])=>`<label class="f">${l}<input data-c="${k}" value="${esc(c[k]||"")}"></label>`).join("")}</div>`:`<p class="muted small">Copertina con i dati del cliente non trovata: li inserisci tu nel preventivo.</p>`}
+   <h3 style="margin-top:14px">Posizioni lette: ${P.voci.length}</h3>
+   ${P.voci.length?`<div class="list" style="overflow-x:auto"><table><thead><tr><th>Pos.</th><th>Ambiente</th><th>Tipologia</th><th>L (mm)</th><th>H (mm)</th><th>Q.tà</th><th>Dettagli</th><th>Fonte</th></tr></thead><tbody>
+   ${P.voci.map((x,i)=>`<tr><td>${x.pos}</td><td><input data-i="${i}" data-k="nome" value="${esc(x.v.nome)}" style="width:130px"${flag(x,"amb")}></td>
+     <td><select data-i="${i}" data-k="tipo">${Object.entries(TIPI).map(([k,t])=>`<option value="${k}" ${x.v.tipo===k?"selected":""}>${t}</option>`).join("")}</select></td>
+     <td><input data-i="${i}" data-k="W" type="number" value="${x.v.W||""}" style="width:80px"${flag(x,"L")}></td>
+     <td><input data-i="${i}" data-k="H" type="number" value="${x.v.H||""}" style="width:80px"${flag(x,"H")}></td>
+     <td><input data-i="${i}" data-k="q" type="number" value="${x.v.q||1}" style="width:56px"${flag(x,"q")}></td>
+     <td class="small">${esc(RIL_SUMMARY(x.v))}</td><td class="small">${x.src==="modulo"?"modulo digitale":"<b style='color:var(--y)'>"+x.src+": verifica</b>"}</td></tr>`).join("")}
+   </tbody></table></div>`:`<p class="muted">Nessuna posizione compilata trovata.</p>`}
+   <p class="muted small">Da modulo compilato sul tablet i dati sono esatti. Da foto o scansione le caselle spuntate si leggono bene, i numeri scritti a mano vanno controllati: i campi letti con l'OCR sono evidenziati in giallo.</p>
+   <div class="row" style="margin-top:12px"><button class="btn y" id="rilNew" ${P.voci.length?"":"disabled"}>Crea nuovo preventivo</button><button class="btn" id="rilAdd" ${P.voci.length?"":"disabled"}>Aggiungi al preventivo aperto</button><button class="btn" onclick="chiudiRil()">Annulla</button></div>`;
+  $("rilBody").querySelectorAll("[data-i]").forEach(el=>el.oninput=el.onchange=()=>{const x=P.voci[+el.dataset.i].v,k=el.dataset.k;x[k]=["W","H","q"].includes(k)?+el.value:el.value});
+  $("rilBody").querySelectorAll("[data-c]").forEach(el=>el.oninput=()=>P.cliente[el.dataset.c]=el.value);
+  if($("rilNew"))$("rilNew").onclick=()=>creaDaRil(true);if($("rilAdd"))$("rilAdd").onclick=()=>creaDaRil(false);
+}
+function creaDaRil(nuovo){
+  const P=rilPending,bad=P.voci.filter(x=>!(x.v.W>=200&&x.v.H>=200));
+  if(bad.length&&!confirm(`${bad.length} posizioni senza misure valide verranno saltate. Continuare?`))return;
+  if(nuovo){Q=newQuote()}
+  if(P.cliente)Object.entries(P.cliente).forEach(([k,v])=>{if(v)Q.cliente[k]=v});
+  P.voci.filter(x=>x.v.W>=200&&x.v.H>=200).forEach(x=>{x.v.id=uid();Q.voci.push(x.v)});
+  chiudiRil();bindCliente();renderVoci();autosave();show("prev");toast("Preventivo creato dalla scheda di rilievo: controlla le voci");
+}
+function chiudiRil(){$("ovRil").classList.remove("on");document.body.style.overflow="";rilPending=null}
+const intv=s=>{const n=parseInt(String(s||"").replace(/\D/g,""),10);return isFinite(n)?n:0};
+
+/* mappatura scheda di rilievo PERSIANE -> voce preventivo */
+const RIL_NUM=new Set(["q","L","H","LV","HV","D1","D2","MZ","FS","chh","cli_tel"]);
+const RIL_OCR=new Set([...RIL_NUM,"amb","col_altro","note","cli_nome","cli_cf","cli_ind","cli_mail","cli_rif"]);
+function RIL_MAP(v){
+  const tipi=["F1","F2","B1","B2","SF","SB"],sel=tipi.find(t=>v["tipo_"+t]);
+  const W=intv(v.L)||intv(v.LV),H=intv(v.H)||intv(v.HV);
+  if(!W&&!H&&!v.amb&&!sel)return null;
+  const tipo=sel||(H>=2040?"B2":"F2"),due=n2(tipo);
+  const mi=MODELLI.findIndex((m,j)=>v["mod_"+j]);const mod=scor(tipo)?"Scorrevole":(mi>=0&&mi<4?MODELLI[mi]:"Fiorentina con telaio");
+  const ci=[0,1,2,3,4,5,6].find(j=>v["col_"+j]);const altri=!!(v.col_altri||v.col_altro);
+  const colN=ci!==undefined?COLORI[ci].n:(altri?COLORI.find(c=>c.altro).n:COLORI[0].n);
+  const ex=[];if(v.pos_oltre)ex.push("posa oltre luce");if(v.pos_luce)ex.push("posa in luce");if(v.arco)ex.push("vano ad arco/inclinato");
+  if(v.fis_tel)ex.push("fissaggio su telaio perimetrale");if(v.fis_muro)ex.push("cardini a muro");if(v.fis_riuso)ex.push("riuso cardini esistenti");if(v.ferma)ex.push("fermapersiana a muro");
+  if(intv(v.MZ))ex.push(`mazzetta ${intv(v.MZ)} mm`);if(v.note)ex.push(v.note);
+  return {nome:v.amb||"",tipo,mod,W,H,q:intv(v.q)||1,lato:(v.car_dx||v.scor_dx)?"dx":"sx",col:colN,colAltro:v.col_altro||"",ralAltri:altri,acc:v.acc_ral?"ral":"nero",
+    lam:!!v.lam,fs:intv(v.FS),band:v.fis_band?2:0,pal:v.paletto?2:0,cer:v.impacc?2:0,fpi:v.ferma_int?(due?2:1):0,chius:v.crem?"crem":"spag",
+    chH:intv(v.chh)&&!v.chh_std?{mode:"custom",h:intv(v.chh)}:{mode:"std",h:""},note:ex.join(", ")};
+}
+function RIL_COVER(v){return {nome:v.cli_nome||"",cf:v.cli_cf||"",ind:v.cli_ind||"",tel:v.cli_tel||"",mail:v.cli_mail||"",rif:v.cli_rif||""}}
+function RIL_SUMMARY(v){return `${v.mod} · ${col(v.col).altro?(v.colAltro||"altro RAL"):v.col}${v.chius==="crem"?" · cremonese":""}${v.lam?" · lamelle orient.":""}`}
+
+/* ---------------- navigazione ---------------- */
+function show(v){document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));document.querySelectorAll("section.view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));if(v==="arch")renderArch();if(v==="imp")renderImp();window.scrollTo(0,0)}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+$("bAdd").onclick=()=>openEditor();$("eClose").onclick=closeEditor;$("eCancel").onclick=closeEditor;$("eSave").onclick=saveVoce;
+$("bSalva").onclick=()=>saveQuote(false);$("bPdf").onclick=stampa;
+$("bNuovo").onclick=()=>{if(Q.voci.length&&!confirm("Iniziare un nuovo preventivo? Quello attuale resta nell'archivio solo se l'hai salvato."))return;Q=newQuote();bindCliente();renderVoci();autosave()};
+$("aCerca").oninput=renderArch;$("bSalvaImp").onclick=saveImp;
+$("bResetImp").onclick=()=>{if(!confirm("Ripristinare listino, optional e sconti ai valori calcolati dalle offerte Starpur?"))return;const keep={az:S.az,azDati:S.azDati,note:S.note,logoPartner:S.logoPartner};S=fixS(keep);store("bru_pers_settings",S);renderImp();renderVoci();toast("Valori ripristinati")};
+$("bImp").onclick=()=>$("fImp").click();$("drop").onclick=()=>$("fImp").click();
+$("drop").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("fImp").click()}};
+$("fImp").onchange=e=>{const f=[...e.target.files];e.target.value="";if(f.length)importaFiles(f)};
+["dragover","dragenter"].forEach(ev=>$("drop").addEventListener(ev,e=>{e.preventDefault();$("drop").classList.add("hot")}));
+["dragleave","drop"].forEach(ev=>$("drop").addEventListener(ev,e=>{e.preventDefault();$("drop").classList.remove("hot")}));
+$("drop").addEventListener("drop",e=>{const f=[...e.dataTransfer.files].filter(x=>/\.pdf$/i.test(x.name));if(f.length)importaFiles(f)});
+$("bCsv").onclick=scaricaStorico;$("bRical").onclick=()=>{const r=ricalibra();renderImp();renderVoci();toast(`Listino aggiornato: scarto tipico ${r.dopo.toFixed(1).replace(".",",")}%`)};
+$("bLogo").onclick=()=>$("fLogo").click();$("fLogo").onchange=e=>{const f=e.target.files[0];e.target.value="";if(f)caricaLogo(f)};
+$("bLogoDel").onclick=()=>{S.logoPartner="";store("bru_pers_settings",S);renderPartner()};
+$("bRil").onclick=()=>$("fRil").click();
+$("fRil").onchange=e=>{const f=[...e.target.files];e.target.value="";if(f.length)leggiSchede(f)};
+document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if($("ovRil").classList.contains("on"))chiudiRil();if($("ov").classList.contains("on"))closeEditor();if($("ovImp").classList.contains("on"))chiudiImp()});
+
+(function init(){
+  const b=load("bru_pers_bozza");if(b&&b.voci)Q=b;
+  bindCliente();renderVoci();renderPartner();
+  if(FIREBASE_CONFIG.apiKey&&window.firebase){try{
+    firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();
+    withTimeout(db.collection("preventivi_persiane").get(),6000).then(snap=>{const cloud=[];snap.forEach(d=>cloud.push(d.data()));const map=new Map(ARCH.map(a=>[a.id,a]));cloud.forEach(c=>{const l=map.get(c.id);if(!l||(c.agg||0)>(l.agg||0))map.set(c.id,c)});ARCH=[...map.values()].sort((a,b)=>(b.agg||0)-(a.agg||0));store("bru_pers_archivio",ARCH);renderArch();$("sync").classList.add("cloud");$("sync").querySelector("span").textContent="Sincronizzato"}).catch(()=>{$("sync").querySelector("span").textContent="Offline, salvo sul dispositivo"});
+    withTimeout(db.collection("config").doc("storico_starpur").get(),6000).then(d=>{if(d.exists){try{const r=JSON.parse(d.data().righe||"[]");if(r.length>=STORICO_EXTRA.length){STORICO_EXTRA=r;store("bru_pers_storico_extra",r)}IMPORTI=JSON.parse(d.data().importi||"[]")}catch(e){}}}).catch(()=>{});
+    withTimeout(db.collection("config").doc("persiane").get(),6000).then(d=>{if(d.exists){S=fixS(d.data());store("bru_pers_settings",S);renderVoci();renderPartner()}}).catch(()=>{});
+  }catch(e){console.warn(e)}}
+})();
+</script>
+</body>
+</html>

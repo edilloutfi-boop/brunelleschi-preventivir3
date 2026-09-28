@@ -1,0 +1,19 @@
+BRUNELLESCHI – App preventivi serramenti e persiane con lettura schede di rilievo
+
+CONTENUTO
+- preventivi-serramenti-brunelleschi.html   app finestre/porte PVC (Drutex)
+- preventivi-persiane-brunelleschi.html     app persiane alluminio (Starpur)
+- netlify/functions/leggi-rilievo.mjs       lettura della scrittura a mano con IA (Claude)
+- netlify.toml                              configurazione Netlify
+
+PUBBLICAZIONE SU NETLIFY (serve per la lettura IA della scrittura a mano)
+1. Chiave API: crea una chiave su https://console.anthropic.com (account API di Anthropic, a consumo).
+2. Su Netlify: Site configuration > Environment variables > aggiungi ANTHROPIC_API_KEY = la tua chiave.
+3. Pubblica la cartella con le funzioni:
+   - con Netlify CLI:  npm i -g netlify-cli   poi nella cartella:  netlify deploy --prod
+   - oppure carica la cartella su GitHub e collega il repository al sito Netlify.
+   Nota: il caricamento "trascina la cartella" di Netlify pubblica solo i file statici,
+   NON attiva la funzione: in quel caso l'app usa l'OCR del browser (poco affidabile sul manoscritto).
+4. Apri https://<tuo-sito>.netlify.app/preventivi-persiane-brunelleschi.html (o serramenti).
+
+La chiave resta sul server Netlify: non è mai scritta dentro le pagine HTML.
